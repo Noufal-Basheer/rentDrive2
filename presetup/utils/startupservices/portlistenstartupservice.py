@@ -1,6 +1,5 @@
 import socket
 import threading
-from utils.logger.logger import setup_logger
 from ..logger.logger import setup_logger
 import subprocess
 
@@ -16,7 +15,7 @@ def listen_ports():
             p.info("Connected to:", address)
             received_data = connection.recv(1024).decode()
             p.info("Received message:", received_data)
-            if received_data in ["PULL"]:
+            if received_data in ["PULL","STATUS"]:
                 if received_data=="PULL":
                     try:
                         cmd = "rentdrive pull"

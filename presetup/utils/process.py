@@ -1,11 +1,13 @@
 import os
 from utils.logger.logger import setup_logger
+from utils import presetupfunctions as pre
 p=setup_logger()
-import shutil
+import shutil,socket
 
 def process():
-    movetobin()
-    print("hello")
+    pre.enable_port4444()
+    check_port(4444)
+    
 
 def movetobin():
     curpath = os.getcwd()
@@ -18,3 +20,19 @@ def movetobin():
     except Exception as e:
         print(f"Error: {e}")
 
+
+
+def check_port(port):
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s.settimeout(1) 
+        s.connect(('localhost', port))
+        s.close()  
+        return True  
+    except Exception as e:
+        return False 
+port = 4444
+if check_port(port):
+    p.info(f"Port {port} is open and accepting connections.")
+else:
+    p.info(f"Port {port} is closed.")
