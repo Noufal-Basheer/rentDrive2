@@ -1,14 +1,26 @@
 import os
 from utils.logger.logger import setup_logger
 from utils import presetupfunctions as pre
+from utils import runstartupservice as run
 p=setup_logger()
 import shutil,socket
 
 def process():
-    pre.enable_port4444()
-    check_port(4444)
+    # pre.enable_port4444()
+    # check_port(4444)
+    invoke_startupscripts()
     
-
+def invoke_startupscripts():
+    curr_dir = os.getcwd()
+    service_list = ['portlistenstartuprentdrive.py','ipfetchstartuprentdrive.py']
+    for service in service_list:
+        p.info(f"{service}")
+        service_dir = os.path.join(curr_dir,"utils/startupservices",service)
+        service_name = service.split(".")[0] 
+        p.info(f"adding {service} to startup")
+        res = run.run_startup(service_name,service_name,service_dir)
+        
+    
 def movetobin():
     curpath = os.getcwd()
     binpath = '/usr/bin'

@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
 import socket
 import os
 import time
 import os
-import utils.logger.registry as registry
-from utils.logger.logger import setup_logger
+from ..logger import registry 
+from ..logger.logger import setup_logger
 p =setup_logger()
 
 
