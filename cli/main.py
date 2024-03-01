@@ -10,6 +10,7 @@ if __name__ == "__main__":
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     add_parser = subparsers.add_parser("add", help="Add files")
     add_parser.add_argument("path", nargs="+", help="Paths to add")
+    # add_parser.add_argument("token",help="authentication token" )
     subparsers.add_parser("status", help="Check status")
     subparsers.add_parser("pull", help="Pull files")
 
