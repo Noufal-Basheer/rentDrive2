@@ -27,14 +27,9 @@ WantedBy=multi-user.target
 
 def enable_start_systemd_service(service_name):
     try:
-        # cmd1 = 'sudo systemctl enable ' + service_name + '.service'
-        # cmd2 = 'sudo systemctl start ' + service_name + '.service'
-        # res = subprocess.run(cmd1, shell=False)
-        # res2 = subprocess.run(cmd2,shell=False)
-        os.system(f'sudo systemctl enable {service_name}.service')
-        os.system(f'sudo systemctl start {service_name}.service')
-        # p.info(f"cmd1 : {res} , cmd2 {res}")
-        p.info(f"run {service_name}")
+        res = os.system(f'sudo systemctl enable {service_name}.service')
+        res2 = os.system(f'sudo systemctl start {service_name}.service')
+        p.info(f"run {service_name} ,{res} , {res2}")
         return True
     except subprocess.CalledProcessError as e:
         p.error(f"error : {str(e)}")

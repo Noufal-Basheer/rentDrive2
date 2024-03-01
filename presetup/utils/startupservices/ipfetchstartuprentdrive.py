@@ -8,7 +8,6 @@ from ..logger.logger import setup_logger
 p =setup_logger()
 
 
-
 def get_ip_address():
     try:
         ip_address = socket.gethostbyname(socket.gethostname())
@@ -17,7 +16,6 @@ def get_ip_address():
         return None
  
  
-    
 def main():
     current_ip = None
     ten_mins = 10*60
@@ -26,5 +24,5 @@ def main():
         if new_ip and new_ip != current_ip:
             current_ip = new_ip
             registry.set_registry("ip_address", new_ip)
-            #updat the database here
+            #update the database here
         time.sleep(ten_mins)

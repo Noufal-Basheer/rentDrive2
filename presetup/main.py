@@ -1,7 +1,7 @@
 import subprocess,sys
 from utils import process
-from utils.logger.logger import setup_logger
-p = setup_logger()
+from utils.logger.logger import p
+
 
 
 if __name__ == "__main__":

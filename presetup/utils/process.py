@@ -1,8 +1,7 @@
 import os
-from utils.logger.logger import setup_logger
+from utils.logger.logger import p
 from utils import presetupfunctions as pre
 from utils import runstartupservice as run
-p=setup_logger()
 import shutil,socket
 
 def process():

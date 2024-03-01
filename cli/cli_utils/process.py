@@ -1,10 +1,21 @@
 from cli_utils.logger.logger import setup_logger
-p =setup_logger()
+p = setup_logger()
+import os
+from cli_utils import utils
 
-def add(path):
+CLEAR_PATH = True
+
+def add(paths):
     p.info("adding...")
-    for paths in path:
-        p.info(f"{paths}")
+    user_path = os.path.expanduser("~")
+    DATA_PATH = os.path.join(user_path,".rentDrive","data")
+    utils.move_data(paths,DATA_PATH)
+    
+    
+ 
+                
+                
+            
 
 
 def status():

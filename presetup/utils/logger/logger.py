@@ -24,3 +24,5 @@ def setup_logger():
     logger.addHandler(console_handler)
 
     return logger
+
+p = setup_logger()
