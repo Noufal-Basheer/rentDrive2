@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import socket
 import threading
-from ..logger.logger import setup_logger
+from logger.logger import setup_logger
 import subprocess
 
 def listen_ports():
@@ -10,6 +10,7 @@ def listen_ports():
         receiver_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         receiver_socket.bind(('0.0.0.0', 4444))
         receiver_socket.listen(1)
+        p.info(f"listening")
 
         while True:
             connection, address = receiver_socket.accept()
@@ -30,3 +31,4 @@ def listen_ports():
     receiver_thread.start()
     while True:
         pass 
+listen_ports()

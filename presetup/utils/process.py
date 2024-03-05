@@ -1,5 +1,5 @@
 import os
-from utils.logger.logger import p
+from logger.logger import p
 from utils import presetupfunctions as pre
 from utils import runstartupservice as run
 import shutil,socket

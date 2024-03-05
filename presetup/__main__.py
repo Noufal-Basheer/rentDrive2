@@ -1,6 +1,6 @@
 import subprocess,sys
-from logger.logger import p
 from utils import process
+from logger.logger import p
 
 if __name__ == "__main__":
    p.info(f"--------------- starting execution of presetup ---------------------")

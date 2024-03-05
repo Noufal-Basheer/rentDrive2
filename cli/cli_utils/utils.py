@@ -7,9 +7,6 @@ import datetime
 
 
 def move_data(paths,DATA_PATH):
-       # tar czf - source | gpg --batch --passphrase your_passphrase -c -o mydirectory.tar.gz.gpg
-    # gpg --batch --passphrase your_passphrase -d mydirectory.tar.gz.gpg | tar xzf -
-    
     (folder_path,folder_name) = get_path_and_name(DATA_PATH)
     if folder_path is None:
         folder_name = datetime.datetime.now().strftime("%x").split("/")
@@ -56,7 +53,7 @@ def compute_dir_hash(dir_path):
 
 
 def gpg_encrypt_file(file_path,file_name):
-    
+    # tar czf - source | gpg --batch --passphrase your_passphrase -c -o mydirectory.tar.gz.gpg
     if not file_path:
         p.info("invalid file path")
         return False
@@ -99,7 +96,7 @@ def gpg_decrypt_file(file_name):
         proc_gpg = subprocess.Popen(cmd_gpg, stdin=proc_tar.stdout, stdout=subprocess.PIPE,shell=False)
         proc_tar.stdout.close()
         stdout, stderr = proc_gpg.communicate()
-        p.info(f"executing tar czf - {file_name} | gpg --batch --passphrase **** -c -o {file_name}.tar.gz.gpg ")
+        p.info(f"gpg --batch --passphrase *** -d  {file_name} | tar xzf - ")
         if proc_gpg.returncode != 0:
             p.error("encryption failed")
             return False

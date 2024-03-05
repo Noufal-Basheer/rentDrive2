@@ -13,6 +13,8 @@ if __name__ == "__main__":
     # add_parser.add_argument("token",help="authentication token" )
     subparsers.add_parser("status", help="Check status")
     subparsers.add_parser("pull", help="Pull files")
+    commit_parser = subparsers.add_parser("push",help="Ready to push")
+    commit_parser.add_argument("token",help="Auth token")
 
     args = parser.parse_args()
 
@@ -24,5 +26,11 @@ if __name__ == "__main__":
         process.add(args.path)
     elif args.command == "pull":
         process.pull()
+    elif args.command == "push":
+        if not args.token:
+            p.error("Invalid token")
+            sys.exit(1)
+        process.push()
+        
         
      

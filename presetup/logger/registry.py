@@ -1,7 +1,7 @@
 
 import os
 import json
-from utils.logger.logger import setup_logger
+from logger.logger import setup_logger
 p = setup_logger()
 
 user_path = os.path.expanduser("~")

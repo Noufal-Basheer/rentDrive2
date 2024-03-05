@@ -3,8 +3,8 @@ import socket
 import os
 import time
 import os
-from ..logger import registry 
-from ..logger.logger import setup_logger
+from logger import registry 
+from logger.logger import setup_logger
 p =setup_logger()
 
 
@@ -15,8 +15,7 @@ def get_ip_address():
     except Exception as e:
         return None
  
- 
-def main():
+def ip_fetch():
     current_ip = None
     ten_mins = 10*60
     while True:
@@ -26,3 +25,4 @@ def main():
             registry.set_registry("ip_address", new_ip)
             #update the database here
         time.sleep(ten_mins)
+ip_fetch()

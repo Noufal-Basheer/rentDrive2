@@ -1,5 +1,5 @@
 import subprocess,sys
-from utils.logger.logger import setup_logger
+from logger.logger import setup_logger
 p =setup_logger()
 def enable_port4444():
     PORT=4444

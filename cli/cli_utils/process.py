@@ -14,6 +14,7 @@ def add(paths):
     (FOLDER_PATH,FOLDER_NAME) = utils.move_data(paths,DATA_PATH)
     hash_val_of_dir = utils.compute_dir_hash(FOLDER_PATH)
     p.info(f"hash val of {FOLDER_PATH} : {hash_val_of_dir}")
+        
     
     
  
@@ -21,20 +22,26 @@ def add(paths):
 def commit():
     if not (FOLDER_PATH or FOLDER_NAME):
         utils.get_path_and_name(DATA_PATH)
-        
-    utils.gpg_encrypt_file(FOLDER_PATH,FOLDER_NAME)         
+    utils.gpg_encrypt_file(FOLDER_PATH,FOLDER_NAME)
+    return True         
             
 
 
 def status():
-    
     p.info("status")
     
 
 def pull():
     p.info("pull")
+    #api to do scp from lentee to lender
     
 
 def restore():
     p.info("restore")
+    #api to do scp from lender to lentee
+    
+def push(token):
+    #validate token
+    p.info("token valid")
+    #api call to send message to port
     

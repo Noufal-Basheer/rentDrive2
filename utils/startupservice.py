@@ -1,12 +1,9 @@
 import os
 import getpass
-import subprocess
-from logger.logger import setup_logger
-p = setup_logger()
 
-def create_systemd_service(script_path, service_name,desc):
+def create_systemd_service(script_path, service_name):
     service_content = f"""[Unit]
-Description={desc}
+Description=Update IP Address Service
 After=network.target
 
 [Service]
@@ -23,21 +20,20 @@ WantedBy=multi-user.target
     with open(service_file_path, 'w') as service_file:
         service_file.write(service_content)
 
-    return True
+    return service_file_path
 
 def enable_start_systemd_service(service_name):
-    try:
-        res = os.system(f'sudo systemctl enable {service_name}.service')
-        res2 = os.system(f'sudo systemctl start {service_name}.service')
-        p.info(f"run {service_name} ,{res} , {res2}")
-        return True
-    except subprocess.CalledProcessError as e:
-        p.error(f"error : {str(e)}")
-    
+    os.system(f'sudo systemctl enable {service_name}.service')
+    os.system(f'sudo systemctl start {service_name}.service')
 
 
-def run_startup(script_name,service_name,script_path):
-    service_file_path = create_systemd_service(script_path, service_name,script_name+".rentdrive")
+def run_startup():
+    script_name = 'your_script.py'
+    service_name = 'rentDrive_startup'
+
+    script_path = os.path.abspath(script_name)
+
+    service_file_path = create_systemd_service(script_path, service_name)
     enable_start_systemd_service(service_name)
 
     print(f"Systemd service file created at: {service_file_path}")
