@@ -1,28 +1,30 @@
-from cli_utils.logger.logger import setup_logger
-p = setup_logger()
+from cli_utils.logger.logger import p
+
 import os
 from cli_utils import utils
-
+import shutil
 CLEAR_PATH = True
 USER_PATH = os.path.expanduser("~")
+RENTDRIVE_PATH=os.path.join(USER_PATH,".rentDrive")
 DATA_PATH = os.path.join(USER_PATH,".rentDrive","data")
-
+RESTORE_PATH = os.path.join(USER_PATH,".rentDrive","restore")
+if not os.path.exists(DATA_PATH):
+    os.makedirs(DATA_PATH)
 
 def add(paths):
-    global FOLDER_PATH,FOLDER_NAME
-    p.info("add")
-    (FOLDER_PATH,FOLDER_NAME) = utils.move_data(paths,DATA_PATH)
-    hash_val_of_dir = utils.compute_dir_hash(FOLDER_PATH)
-    p.info(f"hash val of {FOLDER_PATH} : {hash_val_of_dir}")
-        
+    utils.move_data(paths,DATA_PATH)
     
-    
- 
                 
 def commit():
-    if not (FOLDER_PATH or FOLDER_NAME):
-        utils.get_path_and_name(DATA_PATH)
+    (FOLDER_PATH,FOLDER_NAME)=utils.get_path_and_name(DATA_PATH)
+    if not FOLDER_PATH:
+        p.info("Nothing to commit")
+        return True
+    hash_val_of_dir = utils.compute_dir_hash(FOLDER_PATH)
+    p.info(f"hash val of {FOLDER_PATH} : {hash_val_of_dir}")
     utils.gpg_encrypt_file(FOLDER_PATH,FOLDER_NAME)
+    shutil.rmtree(FOLDER_PATH)
+    #api to store hash value
     return True         
             
 
@@ -34,14 +36,22 @@ def status():
 def pull():
     p.info("pull")
     #api to do scp from lentee to lender
-    
 
-def restore():
-    p.info("restore")
-    #api to do scp from lender to lentee
     
 def push(token):
-    #validate token
+    
+    for item in os.listdir(DATA_PATH):
+        if item.endswith(".gpg"):
+            hash = utils.compute_file_hash(os.path.join(DATA_PATH,item))
+            utils.write_to_history(os.path.join(USER_PATH,".rentDrive"),item,hash)
     p.info("token valid")
     #api call to send message to port
-    
+
+def restore():
+    p.info("restoring")
+    utils.restore(RESTORE_PATH,RENTDRIVE_PATH)
+
+def test():
+    p.info(os.listdir(RESTORE_PATH))
+    utils.decrypt_file(RESTORE_PATH,RENTDRIVE_PATH)
+    p.info("restore complete")

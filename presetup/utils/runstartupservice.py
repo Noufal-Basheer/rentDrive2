@@ -1,10 +1,17 @@
 import os
 import getpass
 import subprocess
-from logger.logger import setup_logger
-p = setup_logger()
+from logger.logger import p
+
 
 def create_systemd_service(script_path, service_name,desc):
+    
+    """
+    to create startup services
+    there are 2 startup service , 1 to fetch ip and update database and other for port
+    """
+    
+    
     service_content = f"""[Unit]
 Description={desc}
 After=network.target
@@ -18,7 +25,6 @@ User={getpass.getuser()}
 [Install]
 WantedBy=multi-user.target
 """
-
     service_file_path = f'/etc/systemd/system/{service_name}.service'
     with open(service_file_path, 'w') as service_file:
         service_file.write(service_content)
@@ -39,6 +45,18 @@ def enable_start_systemd_service(service_name):
 def run_startup(script_name,service_name,script_path):
     service_file_path = create_systemd_service(script_path, service_name,script_name+".rentdrive")
     enable_start_systemd_service(service_name)
+    update_permissions("/etc/systemd/system/"+service_name+'.service')
 
-    print(f"Systemd service file created at: {service_file_path}")
-    print(f"Service '{service_name}' enabled and started.")
+    p.info(f"Systemd service file created at: {service_file_path}")
+    p.info(f"Service '{service_name}' enabled and started.")
+    
+def update_permissions(filepath):
+    try:
+        cmd = ['chmod', '+x', filepath]
+        res = subprocess.call(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if res == 0:
+            p.info(f"Permissions updated successfully for {filepath}")
+        else:
+            p.info(f"Failed to update permissions for {filepath}")
+    except Exception as e:
+        p.info(f"An error occurred: {e}")

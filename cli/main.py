@@ -1,7 +1,7 @@
-from cli_utils.logger.logger import setup_logger
+from cli_utils.logger.logger import p
 import argparse , sys
 from cli_utils import process
-p= setup_logger()
+
 
 import argparse
 
@@ -12,9 +12,13 @@ if __name__ == "__main__":
     add_parser.add_argument("path", nargs="+", help="Paths to add")
     # add_parser.add_argument("token",help="authentication token" )
     subparsers.add_parser("status", help="Check status")
+    subparsers.add_parser("commit", help="Check status")
     subparsers.add_parser("pull", help="Pull files")
     commit_parser = subparsers.add_parser("push",help="Ready to push")
     commit_parser.add_argument("token",help="Auth token")
+    subparsers.add_parser("restore", help="Check status")
+    subparsers.add_parser("test", help="Check status")
+    
 
     args = parser.parse_args()
 
@@ -26,11 +30,17 @@ if __name__ == "__main__":
         process.add(args.path)
     elif args.command == "pull":
         process.pull()
+    elif args.command == "commit":
+        process.commit()
     elif args.command == "push":
         if not args.token:
             p.error("Invalid token")
             sys.exit(1)
-        process.push()
+        process.push(args.token)
+    elif args.command=="restore":
+        process.restore()
+    elif args.command=="test":
+        process.test()
         
         
      

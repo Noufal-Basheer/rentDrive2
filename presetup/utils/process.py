@@ -1,13 +1,24 @@
 import os
 from logger.logger import p
-from utils import presetupfunctions as pre
+from logger import registry
 from utils import runstartupservice as run
-import shutil,socket
+import shutil,socket,subprocess,sys
+from utils import createParttiton as cp
+
+PORT=4444
 
 def process():
-    # pre.enable_port4444()
-    # check_port(4444)
-    invoke_startupscripts()
+    # if not check_port():
+    #     enable_port4444()
+    # invoke_startupscripts()
+    
+    # registry.set_registry("PRE_SETUP_COMPLETE","True")  
+    p.info("into partition")
+    cp.initial_setup()
+    cp.create_luks_partition()
+    
+    
+    
     
 def invoke_startupscripts():
     curr_dir = os.getcwd()
@@ -27,23 +38,32 @@ def movetobin():
     p.info(f"rentdrivepath: {rentdrivepath}")
     try:
         shutil.copy(rentdrivepath, binpath)
-        print("rentdrive.py has been moved to /usr/bin.")
+        p.info("rentdrive.py has been moved to /usr/bin.")
     except Exception as e:
         print(f"Error: {e}")
 
 
 
-def check_port(port):
+def check_port():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         s.settimeout(1) 
-        s.connect(('localhost', port))
-        s.close()  
+        s.connect(('localhost', PORT))
+        s.close()
+        p.info("port is open at 4444")  
         return True  
     except Exception as e:
+        p.info(" port 4444 is closed")
         return False 
-port = 4444
-if check_port(port):
-    p.info(f"Port {port} is open and accepting connections.")
-else:
-    p.info(f"Port {port} is closed.")
+    
+    
+def enable_port4444():
+    try:
+        (res1)=subprocess.run(['sudo', 'iptables', '-A', 'INPUT', '-p', 'tcp', '--dport', str(PORT), '-j', 'ACCEPT'], check=True)
+        (res2)=subprocess.run(['sudo', 'iptables-save'], check=True, stdout=subprocess.DEVNULL)
+        p.info(f"setting up the port")
+        p.info(f"res1 {res1}  res2 : {res2} ")
+        return True
+    except subprocess.CalledProcessError as e:
+        p.info(f"exception occured {str(e)}")
+        sys.exit(1)

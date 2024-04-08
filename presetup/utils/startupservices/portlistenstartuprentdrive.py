@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 import socket
 import threading
-from logger.logger import setup_logger
+from logger.logger import p
 import subprocess
 
 def listen_ports():
-    p = setup_logger()
     def receiver():
         receiver_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         receiver_socket.bind(('0.0.0.0', 4444))
@@ -14,6 +13,7 @@ def listen_ports():
 
         while True:
             connection, address = receiver_socket.accept()
+            p.info("-----Incoming commection-------")
             p.info("Connected to:", address)
             received_data = connection.recv(1024).decode()
             p.info("Received message:", received_data)

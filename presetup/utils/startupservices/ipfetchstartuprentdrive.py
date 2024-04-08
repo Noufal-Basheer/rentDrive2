@@ -4,8 +4,7 @@ import os
 import time
 import os
 from logger import registry 
-from logger.logger import setup_logger
-p =setup_logger()
+from logger.logger import p
 
 
 def get_ip_address():
