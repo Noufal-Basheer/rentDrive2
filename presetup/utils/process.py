@@ -9,13 +9,11 @@ PORT=4444
 
 def process():
     # if not check_port():
-    #     enable_port4444()
-    # invoke_startupscripts()
-    
-    # registry.set_registry("PRE_SETUP_COMPLETE","True")  
-    p.info("into partition")
-    cp.initial_setup()
-    cp.create_luks_partition()
+    enable_port4444()
+    invoke_startupscripts()
+    registry.set_registry("PRE_SETUP_COMPLETE","True")  
+    # cp.initial_setup()
+    # cp.create_luks_partition()
     
     
     

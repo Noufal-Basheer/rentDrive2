@@ -153,7 +153,7 @@ def restore(restore_path,rentdrive_path):
     for item in os.listdir(restore_path):
         item_path = os.path.join(restore_path,item)
         if os.path.isdir(item_path):
-            if len(os.listdir(item_path)>1):
+            if len(os.listdir(item_path))>1:
                 non_empty_folders_after_restore.append(item)
             else:
                 shutil.rmtree(item_path)
