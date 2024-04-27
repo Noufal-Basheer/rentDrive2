@@ -1,46 +1,33 @@
-from cli_utils.logger.logger import p
-import argparse , sys
-from cli_utils import process
+import subprocess
+import sys
+import os
+import subprocess,sys
 
 
-import argparse
+def run_command(command):
+    try:
+        subprocess.run(['python3','-m','pipenv', 'run'] + command, check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error executing command: {e}")
+        sys.exit(1)
+
+def main():
+    pipfile_lock_path = os.path.join(os.getcwd(), 'Pipfile.lock')
+    if not os.path.exists(pipfile_lock_path):
+        print("Pipfile.lock not found. Running pipenv install...")
+        try:
+            subprocess.run(['python3','-m','pipenv', 'install'], check=True)
+        except subprocess.CalledProcessError as e:
+            print(f"Error installing dependencies: {e}")
+            sys.exit(1)
+
+    command = sys.argv[1:]
+    if not command:
+        command=['python3', 'execute.py','-h'] 
+    else:
+        command = ['python3', 'execute.py'] + sys.argv[1:]
+
+    run_command(command)
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="RentDrive Application")
-    subparsers = parser.add_subparsers(dest="command", help="Available commands")
-    add_parser = subparsers.add_parser("add", help="Add files")
-    add_parser.add_argument("path", nargs="+", help="Paths to add")
-    # add_parser.add_argument("token",help="authentication token" )
-    subparsers.add_parser("status", help="Check status")
-    subparsers.add_parser("commit", help="Check status")
-    subparsers.add_parser("pull", help="Pull files")
-    commit_parser = subparsers.add_parser("push",help="Ready to push")
-    commit_parser.add_argument("token",help="Auth token")
-    subparsers.add_parser("restore", help="Check status")
-    subparsers.add_parser("test", help="Check status")
-    
-
-    args = parser.parse_args()
-
-    if args.command == "add":
-        if not args.path:
-            p.error("please pass arguments path")
-            sys.exit(1)
-        p.info("rentdrive add %s"%args.path)
-        process.add(args.path)
-    elif args.command == "pull":
-        process.pull()
-    elif args.command == "commit":
-        process.commit()
-    elif args.command == "push":
-        if not args.token:
-            p.error("Invalid token")
-            sys.exit(1)
-        process.push(args.token)
-    elif args.command=="restore":
-        process.restore()
-    elif args.command=="test":
-        process.test()
-        
-        
-     
+    main()
