@@ -99,7 +99,8 @@ class MarketContentResponse(BaseModel):
     created_at : str = Field(...)
     max_size : str = Field(...)
     lending_period:str = Field(...)
-    presetup_done:bool=False
+    presetup_done:bool=Field(...)
+    sold:bool=Field(...)
     class Config:
         allowed_population_by_field_name = True
         arbitrary_types_allowed = True
@@ -113,7 +114,45 @@ class MarketContentResponse(BaseModel):
                 "created_at"  : "date created ",
                 "max_size":"50000000",
                 "lending_period":"30 days",
-                "presetup_done":False
+                "presetup_done":"verify if presetup done",
+                "sold":"verify if already taken"
 
+            }
+        }
+
+class PurchasedContent(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    market_id:str = Field(...)
+    class Config:
+        allowed_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        json_schema_extra= {
+            "example": {
+                "market_id": "12345",
+            }
+        }
+
+class PurchasedContentResponse(BaseModel):
+    id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
+    lender_id:str = Field(...)
+    lentee_id:str = Field(...)
+    market_id:str = Field(...)
+    purchased_at:str = Field(...)
+    remaining_storage:str = Field(...)
+    end_date:str = Field(...)
+
+    class Config:
+        allowed_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        json_schema_extra= {
+            "example": {
+                "lender_id": "lender_id",
+                "lentee_id":"lentee_id",
+                "market_id":"id of the listed item",
+                "purchased_at":"date created",
+                "remaining_storage":"storage available to use",
+                "end_date":"contract ending time"
             }
         }

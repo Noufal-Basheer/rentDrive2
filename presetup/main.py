@@ -7,7 +7,7 @@ from logger.logger import p
 
 def run_command(command):
     try:
-        subprocess.run(['pipenv', 'run'] + command, check=True)
+        subprocess.run(['python3','-m','pipenv', 'run'] + command, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {e}")
         sys.exit(1)
@@ -17,7 +17,7 @@ def main():
     if not os.path.exists(pipfile_lock_path):
         print("Pipfile.lock not found. Running pipenv install...")
         try:
-            subprocess.run(['pipenv', 'install'], check=True)
+            subprocess.run(['python3','-m','pipenv', 'install'], check=True)
         except subprocess.CalledProcessError as e:
             print(f"Error installing dependencies: {e}")
             sys.exit(1)
