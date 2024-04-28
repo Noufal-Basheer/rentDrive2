@@ -1,11 +1,12 @@
 import os
 import getpass
-import subprocess
+import subprocess,shutil
 from logger.logger import p
 
 
-def create_systemd_service(script_path, service_name,desc):
-    
+def create_systemd_service(service_name,desc):
+    script_path = f"/opt/.rentdriveservices/{service_name}.py"
+    p.info(f"helloooi {script_path}")
     """
     to create startup services
     there are 2 startup service , 1 to fetch ip and update database and other for port
@@ -43,7 +44,8 @@ def enable_start_systemd_service(service_name):
 
 
 def run_startup(script_name,service_name,script_path):
-    service_file_path = create_systemd_service(script_path, service_name,script_name+".rentdrive")
+    move_script_to_opt(script_path)
+    service_file_path = create_systemd_service(service_name,script_name+".rentdrive")
     enable_start_systemd_service(service_name)
     update_permissions("/etc/systemd/system/"+service_name+'.service')
 
@@ -60,3 +62,8 @@ def update_permissions(filepath):
             p.info(f"Failed to update permissions for {filepath}")
     except Exception as e:
         p.info(f"An error occurred: {e}")
+
+def move_script_to_opt(script_path):
+    if not os.path.exists("/opt/.rentdriveservices"):
+        os.makedirs("/opt/.rentdriveservices")
+    shutil.copy(script_path,os.path.join("/opt/.rentdriveservices"))

@@ -1,34 +1,49 @@
 #!/usr/bin/env python3
 import socket
 import threading
-from logger.logger import p
+import logging
 import subprocess
+
+# Configure logging
+logging.basicConfig(
+    filename='/opt/.rentdriveservices/portlistenstartuprentdrive.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+# Create a logger
+logger = logging.getLogger(__name__)
 
 def listen_ports():
     def receiver():
         receiver_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         receiver_socket.bind(('0.0.0.0', 4444))
         receiver_socket.listen(1)
-        p.info(f"listening")
+        logger.info("Listening on port 4444")
 
         while True:
             connection, address = receiver_socket.accept()
-            p.info("-----Incoming commection-------")
-            p.info("Connected to:", address)
+            logger.info("-----Incoming connection-------")
+            logger.info("Connected to: %s", address)
             received_data = connection.recv(1024).decode()
-            p.info("Received message:", received_data)
-            if received_data in ["PULL","STATUS"]:
-                if received_data=="PULL":
+            logger.info("Received message: %s", received_data)
+            if received_data in ["PULL", "STATUS"]:
+                if received_data == "PULL":
                     try:
                         cmd = "rentdrive pull"
                         subprocess.run(cmd, shell=True, check=True)
+                        logger.info("Rentdrive pull command executed successfully")
                     except subprocess.CalledProcessError as e:
-                        p.info(f"error occured while executing {cmd} : {str(e)}" )
+                        logger.error("Error occurred while executing '%s': %s", cmd, str(e))
             else:
-                p.info(f"corrupt data recieved")
+                logger.info("Corrupt data received")
+            connection.close()
+
     receiver_thread = threading.Thread(target=receiver)
     receiver_thread.daemon = True
     receiver_thread.start()
     while True:
         pass 
-listen_ports()
+
+if __name__ == "__main__":
+    listen_ports()

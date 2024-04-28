@@ -1,38 +1,44 @@
 #!/usr/bin/env python3
-import socket
 import time
-import os,subprocess
-from logger import registry 
-from logger.logger import p
+import subprocess,netifaces
+import logging
 
+id = "856127940c5f3e4d"
+logging.basicConfig(
+    filename='/opt/.rentdriveservices/ipfetchstartuprentdrive.log',
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
 
-def join_vpn():
-    id = "856127940c5f3e4d"
+def join_vpn(): 
     try:
-        cmd = ['sudo','zerotier-cli','join',id]
-        p.info("Joining the network")
-        res = subprocess.call(cmd,check=True)
-        p.info(res)
-
+        cmd = ['sudo', 'zerotier-cli', 'join', id]
+        res = subprocess.call(cmd)
+        logging.info("VPN joined successfully")
     except subprocess.CalledProcessError as e:
-        p.info(str(e))
+        logging.error("Error joining VPN: %s", str(e))
 
 def get_ip_address():
     try:
-        ip_address = socket.gethostbyname(socket.gethostname())
+        cmd = ['sudo','zerotier-cli', 'get', id, 'ip']
+        result = subprocess.Popen(cmd, stdout=subprocess.PIPE)
+        ip_address = result.communicate()[0].decode().strip()
+        logging.info(f"ip address : {ip_address}")
         return ip_address
     except Exception as e:
+        logging.error("Error fetching IP address for interface %s: ", str(e))
         return None
- 
 def ip_fetch():
     current_ip = None
-    ten_mins = 10*60
+    ten_mins = 10 * 60
     join_vpn()
     while True:
         new_ip = get_ip_address()
         if new_ip and new_ip != current_ip:
             current_ip = new_ip
-            registry.set_registry("ip_address", new_ip)
-            #update the database here
+            logging.info("IP address updated: %s", current_ip)
+            # Update the database here
         time.sleep(ten_mins)
-ip_fetch()
+
+if __name__ == "__main__":
+    ip_fetch()
