@@ -73,10 +73,11 @@ class UserResponse(BaseModel):
 class TokenData(BaseModel):
     id : str
 
-class BlogContent(BaseModel):
+class MarketContent(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    title:str = Field(...)
-    body: str = Field(...)
+    description: str = Field(...)
+    max_size:str = Field(...)
+    lending_period:str = Field(...)
 
     class Config:
         allowed_population_by_field_name = True
@@ -84,28 +85,35 @@ class BlogContent(BaseModel):
         json_encoders = {ObjectId: str}
         json_schema_extra= {
             "example": {
-                "title": "Blog title",
-                "body": "blog content",
+                "description": "description",
+                "max_size":"max_size",
+                "lending_period":"30 days"
             }
         }
-class BlogContentResponse(BaseModel):
+class MarketContentResponse(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    title:str = Field(...)
-    body: str = Field(...)
-    author_name : str = Field(...)
-    author_id : str = Field(...)
+    lender_name:str = Field(...)
+    description: str = Field(...)
+    ip_address : str = Field(...)
+    lender_id : str = Field(...)
     created_at : str = Field(...)
+    max_size : str = Field(...)
+    lending_period:str = Field(...)
+    presetup_done:bool=False
     class Config:
         allowed_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
         json_schema_extra= {
             "example": {
-                "title": "Blog title",
-                "body": "blog content",
-                "auther_name" : "auther_name",
-                "auther_id" : "auther id",
-                "created_at"  : "date created "
+                "lender_name": "lender_name",
+                "description": "description",
+                "ip_address" : "ip_address",
+                "lender_id" : "lender_id",
+                "created_at"  : "date created ",
+                "max_size":"50000000",
+                "lending_period":"30 days",
+                "presetup_done":False
 
             }
         }

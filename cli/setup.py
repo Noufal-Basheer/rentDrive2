@@ -5,7 +5,7 @@ setup(
     name="RentDrive",
     version="1.0.0",
     packages=find_packages(),
-    executables=[Executable("main.py")],
+    executables=[Executable("main.py",target_name="rentdrive")],
     options={
         "build_exe": {
             "packages": ["logger", "cli_utils"],  # Add your package names here

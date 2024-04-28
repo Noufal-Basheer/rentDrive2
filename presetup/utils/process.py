@@ -15,10 +15,6 @@ def process():
     create_rentdrive_user()
     
     
-    # cp.initial_setup()
-    # cp.create_luks_partition()
-    
-    
     
     
 def invoke_startupscripts():

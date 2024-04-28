@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException,status
-from ..schemas import BlogContent,BlogContentResponse,db
+from ..schemas import MarketContent,MarketContentResponse,db
 from fastapi.encoders import jsonable_encoder
 from .. import oauth2
 
@@ -8,23 +8,29 @@ from .. import oauth2
 import datetime
 from typing import List
 router = APIRouter(
-    prefix="/blog",
+    prefix="/marketplace",
     tags=["Add "]
 )
 
 
 
-@router.post("",response_description="Create blog content",response_model=BlogContentResponse)
-async def create_blog(blog_content:BlogContent,curr_user = Depends(oauth2.get_current_user)):
+@router.post("",response_description="Create new server",response_model=MarketContentResponse)
+async def create_server(market_content:MarketContent,curr_user = Depends(oauth2.get_current_user)):
     try:
-        blog_content = jsonable_encoder(blog_content)
-        blog_content['author_name'] = curr_user["name"]
-        blog_content['author_id'] = curr_user["_id"]
-        blog_content["created_at"] = str(datetime.datetime.utcnow())
+        duplicate_entry = db["market"].find_one({"lender_id":curr_user["_id"]})
+        if duplicate_entry:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT,detail="Entry already present")
 
-        new_blog_content = await db["blogPost"].insert_one(blog_content)
-        print(new_blog_content.inserted_id)
-        creted_post = await db["blogPost"].find_one({"_id":new_blog_content.inserted_id})
+        market_content = jsonable_encoder(market_content)
+        market_content['lender_name'] = curr_user['name']
+        market_content['lender_id'] = curr_user["_id"]
+        market_content["created_at"] = str(datetime.datetime.utcnow())
+        market_content["ip_address"] = "127.0.0.1"
+        
+
+        new_market_content = await db["market"].insert_one(market_content)
+        print(new_market_content.inserted_id)
+        creted_post = await db["market"].find_one({"_id":new_market_content.inserted_id})
 
         return creted_post
 
@@ -32,18 +38,35 @@ async def create_blog(blog_content:BlogContent,curr_user = Depends(oauth2.get_cu
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Error encoding data")
+    
 
-@router.get("",response_description="Get blog content",response_model=List[BlogContentResponse])
+@router.put("",response_description="Update ip_address",response_model=bool)
+async def update_ipaddress(ip_address:str,current_user=Depends(oauth2.get_current_user)):
+    try:
+        market_content = db["market"].find_one({"lender_id":current_user["_id"]})
+        if market_content:
+            db["market"].update_one({"lender_id": current_user["_id"]}, {"$set": {"ip_address": ip_address,"presetup_done":True}})
+            return True 
+        else:
+            return False  
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Error updating ip address")
+
+
+
+
+@router.get("",response_description="Get all servers",response_model=List[MarketContentResponse])
 async def get_blogs(limit:int =4,order_by:str = "created_at"):
     try:
-        blog_posts = await db["blogPost"].find({"$query": {},"$orderby":{order_by:-1}}).to_list(limit)
+        blog_posts = await db["market"].find({"$query": {},"$orderby":{order_by:-1}}).to_list(limit)
         return blog_posts
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Error encoding data") 
     
 
-@router.get("/{id}",response_description="Get blog content",response_model=BlogContentResponse)
+@router.get("/{id}",response_description="Get blog content",response_model=MarketContentResponse)
 async def get_blogs_by_id(id:str):
     try:
         blog_posts = await db["blogPost"].find_one({"_id":id})
@@ -54,8 +77,8 @@ async def get_blogs_by_id(id:str):
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="N result")
 
-@router.put("/{id}",response_model=BlogContentResponse)
-async def update_blog(id:str,blog_content:BlogContent,current_user=Depends(oauth2.get_current_user)):
+@router.put("/{id}",response_model=MarketContentResponse)
+async def update_blog(id:str,blog_content:MarketContent,current_user=Depends(oauth2.get_current_user)):
     
     if blog_post := await db["blogPost"].find_one({"_id":id}):
         if blog_post["author_id"]== current_user["_id"]:

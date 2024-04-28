@@ -51,7 +51,5 @@ def restore():
     p.info("restoring")
     utils.restore(RESTORE_PATH,RENTDRIVE_PATH)
 
-def test():
-    p.info(os.listdir(RESTORE_PATH))
-    utils.decrypt_file(RESTORE_PATH,RENTDRIVE_PATH)
-    p.info("restore complete")
+def config(username,password):
+    pass

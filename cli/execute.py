@@ -9,15 +9,17 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="RentDrive Application")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
     add_parser = subparsers.add_parser("add", help="Add files")
-    add_parser.add_argument("path", nargs="+", help="Paths to add")
-    # add_parser.add_argument("token",help="authentication token" )
+    add_parser.add_argument("path", nargs="+", help="files/dirs to add \t rentdrive add <path>")
     subparsers.add_parser("status", help="Check status")
-    subparsers.add_parser("commit", help="Check status")
+    subparsers.add_parser("commit", help="commit the files and make it ready to push ")
     subparsers.add_parser("pull", help="Pull files")
-    commit_parser = subparsers.add_parser("push",help="Ready to push")
+    commit_parser = subparsers.add_parser("push",help="Push the files to server")
     commit_parser.add_argument("token",help="Auth token")
     subparsers.add_parser("restore", help="Check status")
-    subparsers.add_parser("test", help="Check status")
+    config_parser = subparsers.add_parser("config", help="Config your account \t config -u <username> -p <password>")
+    config_parser.add_argument("u",help="username")
+    config_parser.add_argument("p", help="password")
+
     
 
     args = parser.parse_args()
@@ -39,8 +41,9 @@ if __name__ == "__main__":
         process.push(args.token)
     elif args.command=="restore":
         process.restore()
-    elif args.command=="test":
-        process.test()
+    elif args.command=="config":
+        process.config(args.u,args.p)
+
         
         
      

@@ -5,7 +5,7 @@ setup(
     name="RentDrive presetup",
     version="1.0.0",
     packages=find_packages(),
-    executables=[Executable("main.py")],
+    executables=[Executable("main.py",target_name="setup")],
     options={
         "build_exe": {
             "packages": ["logger", "utils"],  # Add your package names here
