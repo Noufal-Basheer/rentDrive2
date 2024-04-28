@@ -1,0 +1,18 @@
+Defaulting to user installation because normal site-packages is not writeable
+Collecting python-jose
+  Downloading python_jose-3.3.0-py2.py3-none-any.whl.metadata (5.4 kB)
+Collecting ecdsa!=0.15 (from python-jose)
+  Downloading ecdsa-0.18.0-py2.py3-none-any.whl.metadata (29 kB)
+Collecting rsa (from python-jose)
+  Downloading rsa-4.9-py3-none-any.whl.metadata (4.2 kB)
+Collecting pyasn1 (from python-jose)
+  Downloading pyasn1-0.6.0-py2.py3-none-any.whl.metadata (8.3 kB)
+Requirement already satisfied: six>=1.9.0 in /usr/lib/python3/dist-packages (from ecdsa!=0.15->python-jose) (1.16.0)
+Downloading python_jose-3.3.0-py2.py3-none-any.whl (33 kB)
+Downloading ecdsa-0.18.0-py2.py3-none-any.whl (142 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 142.9/142.9 kB 1.6 MB/s eta 0:00:00
+Downloading pyasn1-0.6.0-py2.py3-none-any.whl (85 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 85.3/85.3 kB 3.2 MB/s eta 0:00:00
+Downloading rsa-4.9-py3-none-any.whl (34 kB)
+Installing collected packages: pyasn1, ecdsa, rsa, python-jose
+Successfully installed ecdsa-0.18.0 pyasn1-0.6.0 python-jose-3.3.0 rsa-4.9

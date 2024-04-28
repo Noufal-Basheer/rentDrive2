@@ -12,11 +12,12 @@ def run_command(command):
         sys.exit(1)
 
 def main():
-    pipfile_lock_path = os.path.join(os.getcwd(), 'Pipfile.lock')
+    os.environ["PIPENV_VENV_IN_PROJECT"] = "1"
+    pipfile_lock_path = os.path.join(os.getcwd(), 'Pipfile.lock') #check in project directory 
     if not os.path.exists(pipfile_lock_path):
         print("Pipfile.lock not found. Running pipenv install...")
         try:
-            subprocess.run(['python3','-m','pipenv', 'install'], check=True)
+            subprocess.run(['python3','-m','pipenv', 'install'], check=True) #PIPENV_VENV_IN_PROJECT
         except subprocess.CalledProcessError as e:
             print(f"Error installing dependencies: {e}")
             sys.exit(1)

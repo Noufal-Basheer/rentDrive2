@@ -1,11 +1,21 @@
 #!/usr/bin/env python3
 import socket
-import os
 import time
-import os
+import os,subprocess
 from logger import registry 
 from logger.logger import p
 
+
+def join_vpn():
+    id = "856127940c5f3e4d"
+    try:
+        cmd = ['sudo','zerotier-cli','join',id]
+        p.info("Joining the network")
+        res = subprocess.call(cmd,check=True)
+        p.info(res)
+
+    except subprocess.CalledProcessError as e:
+        p.info(str(e))
 
 def get_ip_address():
     try:
@@ -17,6 +27,7 @@ def get_ip_address():
 def ip_fetch():
     current_ip = None
     ten_mins = 10*60
+    join_vpn()
     while True:
         new_ip = get_ip_address()
         if new_ip and new_ip != current_ip:

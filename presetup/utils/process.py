@@ -12,6 +12,9 @@ def process():
     enable_port4444()
     invoke_startupscripts()
     registry.set_registry("PRE_SETUP_COMPLETE","True")  
+    create_rentdrive_user()
+    
+    
     # cp.initial_setup()
     # cp.create_luks_partition()
     
@@ -57,11 +60,35 @@ def check_port():
     
 def enable_port4444():
     try:
-        (res1)=subprocess.run(['sudo', 'iptables', '-A', 'INPUT', '-p', 'tcp', '--dport', str(PORT), '-j', 'ACCEPT'], check=True)
+        cmd1 = ['sudo', 'iptables', '-A', 'INPUT', '-p', 'tcp', '--dport', str(PORT), '-j', 'ACCEPT']
+        p.info("adding port 4444 to iptables")
+        p.info(f"Executing : {' '.join(cmd1)}")
+        (res1)=subprocess.run(cmd1, check=True)
+        p.info(f" {res1} ")
+
+        p.info("permanently saving it to iptables")
+        p.info(f"Executing : iptables-save")
         (res2)=subprocess.run(['sudo', 'iptables-save'], check=True, stdout=subprocess.DEVNULL)
+        p.info(f"{res2}")
         p.info(f"setting up the port")
-        p.info(f"res1 {res1}  res2 : {res2} ")
         return True
     except subprocess.CalledProcessError as e:
         p.info(f"exception occured {str(e)}")
         sys.exit(1)
+
+def create_rentdrive_user():
+    username= "rentdrive"
+    password= "Commvault!12"
+    try:
+        p.info("Creating user rentdrive")
+        create_user_cmd = ["sudo", "useradd", "-m", username]
+        subprocess.run(create_user_cmd, check=True)
+        p.info("Setting the password")
+        set_password_cmd = ["sudo", "passwd", username]
+        set_password_proc = subprocess.Popen(set_password_cmd, stdin=subprocess.PIPE)
+        set_password_proc.communicate((password + "\n" + password + "\n").encode())
+        p.info("adding root privileges")
+        grant_root_cmd = ["sudo", "usermod", "-aG", "sudo", username]
+        subprocess.run(grant_root_cmd, check=True)
+    except subprocess.CalledProcessError as e:
+        p.info(str(e))
