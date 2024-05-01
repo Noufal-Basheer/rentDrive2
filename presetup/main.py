@@ -2,14 +2,19 @@ import subprocess
 import sys
 import os
 import subprocess,sys
-from utils import process
-from logger.logger import p
 
 def run_command(command):
     try:
         subprocess.run(['python3','-m','pipenv', 'run'] + command, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {e}")
+        sys.exit(1)
+
+def install_requirements():
+    try:
+        subprocess.run(['python3', '-m', 'pipenv', 'install', '-r', 'requirements.txt'], check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing requirements: {e}")
         sys.exit(1)
 
 def main():
@@ -21,6 +26,9 @@ def main():
         except subprocess.CalledProcessError as e:
             print(f"Error installing dependencies: {e}")
             sys.exit(1)
+    if os.path.exists('requirements.txt'):
+        print("Installing dependencies from requirements.txt...")
+        install_requirements()
 
     command = sys.argv[1:]
     if not command:

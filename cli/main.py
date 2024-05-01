@@ -6,21 +6,25 @@ import subprocess,sys
 
 def run_command(command):
     try:
-        subprocess.run(['python3','-m','pipenv', 'run'] + command, check=True)
+        subprocess.run(command, check=True)
     except subprocess.CalledProcessError as e:
         print(f"Error executing command: {e}")
         sys.exit(1)
 
 def main():
-    os.environ["PIPENV_VENV_IN_PROJECT"] = "1"
-    pipfile_lock_path = os.path.join(os.getcwd(), 'Pipfile.lock') #check in project directory 
-    if not os.path.exists(pipfile_lock_path):
-        print("Pipfile.lock not found. Running pipenv install...")
-        try:
-            subprocess.run(['python3','-m','pipenv', 'install'], check=True) #PIPENV_VENV_IN_PROJECT
-        except subprocess.CalledProcessError as e:
-            print(f"Error installing dependencies: {e}")
-            sys.exit(1)
+    # link_path = '/usr/local/bin/rentdrive-cli'
+    # if not os.path.exists(link_path):
+    #     print("Please run setup.sh first")
+    #     sys.exit(1)
+    # project_directory = os.path.dirname(os.path.realpath(link_path))
+    # os.chdir(project_directory)
+    # os.environ["PIPENV_VENV_IN_PROJECT"] = "1" 
+    
+    try:
+        subprocess.run(['python3','-m','pipenv', 'install'], check=True) 
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing dependencies: {e}")
+        sys.exit(1)
 
     command = sys.argv[1:]
     if not command:

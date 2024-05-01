@@ -1,21 +1,73 @@
-import os
+import os,requests
 from logger.logger import p
-from logger import registry
+import json
+from datetime import datetime, timedelta
 from utils import runstartupservice as run
 import shutil,socket,subprocess,sys
 from utils import createParttiton as cp
 
 PORT=4444
 
+BASE_URL = "http://127.0.0.1:8000"
+
 def process():
-    # if not check_port():
+    check_if_user_logged_in()
     enable_port4444()
     invoke_startupscripts()
-    registry.set_registry("PRE_SETUP_COMPLETE","True")  
+    # registry.set_registry("PRE_SETUP_COMPLETE","True")  
     create_rentdrive_user()
     
     
+def check_if_user_logged_in():
     
+    if get_auth_token():
+        return True
+    username = input("Enter username")
+    password = input("Enter password")
+    login(username, password)
+    return True
+
+def get_auth_token():
+    token_data= {}
+    token_path = "/opt/.rentdriveservices/.authtoken.json"
+    if os.path.exists(token_path):
+        with open(token_path, "r") as token_file:
+            token_data = json.load(token_file)
+    if not token_data:
+        return False
+    token = token_data["token"]
+    expiration_date_str = token_data["expiration_date"]
+    expiration_date = datetime.strptime(expiration_date_str, "%Y-%m-%d %H:%M:%S")
+    if datetime.now() > expiration_date:
+        p.infog("Existing token expired. Please login again")
+        return False
+    else:
+        return True
+
+    
+def set_auth_token(auth_token):
+    expiration_date = datetime.now() + timedelta(days=30)
+    token_data = {
+    "token": auth_token,
+    "expiration_date": expiration_date.strftime("%Y-%m-%d %H:%M:%S")
+}
+    
+    with open("/opt/.rentdriveservices/.authtoken.json", "w") as token_file:
+        json.dump(token_data, token_file)
+
+def login(username, password):
+    payload={
+        "username": username,
+        "password": password
+    }
+    url = BASE_URL+"/login"
+    response = requests.post(url, data=payload)
+    if response.status_code == 200:
+        set_auth_token(response.json().get('access_token'))
+        return True
+    else:
+        p.info("Error:", response.text)
+        return False
     
 def invoke_startupscripts():
     curr_dir = os.getcwd()

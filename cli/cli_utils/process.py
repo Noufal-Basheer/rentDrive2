@@ -1,8 +1,9 @@
 from cli_utils.logger.logger import p
-
+from cli_utils.logger import registry
 import os
-from cli_utils import utils
+from cli_utils import utils,apirequests
 import shutil
+
 CLEAR_PATH = True
 USER_PATH = os.path.expanduser("~")
 RENTDRIVE_PATH=os.path.join(USER_PATH,".rentDrive")
@@ -10,6 +11,8 @@ DATA_PATH = os.path.join(USER_PATH,".rentDrive","data")
 RESTORE_PATH = os.path.join(USER_PATH,".rentDrive","restore")
 if not os.path.exists(DATA_PATH):
     os.makedirs(DATA_PATH)
+
+
 
 def add(paths):
     utils.move_data(paths,DATA_PATH)
@@ -52,4 +55,10 @@ def restore():
     utils.restore(RESTORE_PATH,RENTDRIVE_PATH)
 
 def config(username,password):
-    pass
+    p.info("configuring....")
+    auth_token = apirequests.login(username,password)
+    if auth_token:
+        p.info("configuration successfull")
+        registry.set_registry("auth_token",auth_token)
+    else:
+        p.info("Invalid credentials")

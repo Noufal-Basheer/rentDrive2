@@ -17,8 +17,9 @@ if __name__ == "__main__":
     commit_parser.add_argument("token",help="Auth token")
     subparsers.add_parser("restore", help="Check status")
     config_parser = subparsers.add_parser("config", help="Config your account \t config -u <username> -p <password>")
-    config_parser.add_argument("u",help="username")
-    config_parser.add_argument("p", help="password")
+    config_parser.add_argument("u",  help="username")
+    config_parser.add_argument("p",  help="password")
+
 
     
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import time
+import time,datetime,json
 import subprocess,netifaces
 import logging
 
@@ -9,6 +9,16 @@ logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
+def get_auth_token():
+    token_data= {}
+    with open("/opt/.rentdriveservices/.authtoken.json", "r") as token_file:
+        token_data = json.load(token_file)
+    if not token_data:
+        logging.info("Couldnt find token")
+        return None
+    token = token_data["token"]
+    return token
 
 def join_vpn(): 
     try:
@@ -30,8 +40,9 @@ def get_ip_address():
         return None
 def ip_fetch():
     current_ip = None
-    ten_mins = 10 * 60
+    ten_mins = 30 * 60
     join_vpn()
+    get_auth_token()
     while True:
         new_ip = get_ip_address()
         if new_ip and new_ip != current_ip:

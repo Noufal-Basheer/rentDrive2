@@ -9,7 +9,7 @@ setup(
     options={
         "build_exe": {
             "packages": ["logger", "cli_utils"],  # Add your package names here
-            "include_files": ["execute.py","__init__.py","cli_utils"],  # Add any additional files here
+            "include_files": ["execute.py","__init__.py","cli_utils","setup.sh"],  # Add any additional files here
         }
     }
 )
