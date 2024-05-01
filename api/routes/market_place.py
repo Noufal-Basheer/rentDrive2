@@ -48,7 +48,7 @@ async def update_ipaddress(ip_address:str,current_user=Depends(oauth2.get_curren
     try:
         market_content = await db["market"].find_one({"lender_id":current_user["_id"]})
         if market_content:
-            await db["market"].update_one({"lender_id": current_user["_id"]}, {"$set": {"ip_address": ip_address,"presetup_done":True}})
+            await db["market"].update_one({"lender_id": current_user["_id"]}, {"$set": {"ip_address": ip_address}})
             return True 
         else:
             return False  
@@ -57,7 +57,18 @@ async def update_ipaddress(ip_address:str,current_user=Depends(oauth2.get_curren
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Error updating ip address")
 
 
-
+@router.put("/presetup_done",response_description="Update ip_address",response_model=bool)
+async def update_ipaddress(current_user=Depends(oauth2.get_current_user)):
+    try:
+        market_content = await db["market"].find_one({"lender_id":current_user["_id"]})
+        if market_content:
+            await db["market"].update_one({"lender_id": current_user["_id"]}, {"$set": {"presetup_done": True}})
+            return True 
+        else:
+            return False  
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,detail="Error updating database")
 
 @router.get("",response_description="Get all servers",response_model=List[MarketContentResponse])
 async def get_blogs(limit:int =4,order_by:str = "created_at"):

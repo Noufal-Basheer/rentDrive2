@@ -3,7 +3,7 @@ from logger.logger import p
 import json
 from datetime import datetime, timedelta
 from utils import runstartupservice as run
-import shutil,socket,subprocess,sys
+import socket,subprocess,sys
 from utils import createParttiton as cp
 
 PORT=4444
@@ -12,48 +12,77 @@ BASE_URL = "http://127.0.0.1:8000"
 
 def process():
     check_if_user_logged_in()
+    add_to_essentials("zerotier-id","856127940c5f3e4d")
     enable_port4444()
     invoke_startupscripts()
-    # registry.set_registry("PRE_SETUP_COMPLETE","True")  
     create_rentdrive_user()
+    update_presetup_complete()
     
-    
+def update_presetup_complete():
+    url = BASE_URL + "/marketplace/presetup_done"
+    auth_token = get_auth_token()
+    if not auth_token:
+        p.info("unable to update, login to continue")
+        return False
+    headers = {
+    "Authorization": "Bearer " + auth_token ,
+    "accept": "application/json",
+}
+    try:
+        response = requests.put(url,headers=headers)
+        if response.status_code == 200:
+            p.info("Database updated successfully")
+            return True
+        else:
+            p.info("Failed to database ",response.text)
+            return False
+    except Exception as e:
+        p.info(f"updae_presetup_complete : {e}")
+
 def check_if_user_logged_in():
     
     if get_auth_token():
         return True
-    username = input("Enter username")
-    password = input("Enter password")
+    username = input("Enter username : \t")
+    password = input("Enter password : \t")
     login(username, password)
     return True
 
 def get_auth_token():
     token_data= {}
-    token_path = "/opt/.rentdriveservices/.authtoken.json"
+    token_path = "/opt/.rentdriveservices/.rentessentials.json"
     if os.path.exists(token_path):
         with open(token_path, "r") as token_file:
             token_data = json.load(token_file)
     if not token_data:
-        return False
+        return None
     token = token_data["token"]
     expiration_date_str = token_data["expiration_date"]
     expiration_date = datetime.strptime(expiration_date_str, "%Y-%m-%d %H:%M:%S")
     if datetime.now() > expiration_date:
         p.infog("Existing token expired. Please login again")
-        return False
+        return None
     else:
-        return True
+        return token
+
+
+def add_to_essentials(key,value):
+    try:
+        with open("/opt/.rentdriveservices/.rentessentials.json", "r") as essentials:
+            existing_data = json.load(essentials)
+    except FileNotFoundError:
+        existing_data = {}
+    
+    existing_data[key] = value
+    with open("/opt/.rentdriveservices/.rentessentials.json", "w") as essentials:
+        json.dump(existing_data, essentials)
 
     
 def set_auth_token(auth_token):
     expiration_date = datetime.now() + timedelta(days=30)
-    token_data = {
-    "token": auth_token,
-    "expiration_date": expiration_date.strftime("%Y-%m-%d %H:%M:%S")
-}
-    
-    with open("/opt/.rentdriveservices/.authtoken.json", "w") as token_file:
-        json.dump(token_data, token_file)
+    add_to_essentials("token",auth_token)
+    add_to_essentials("expiration_date",expiration_date.strftime("%Y-%m-%d %H:%M:%S"))
+
 
 def login(username, password):
     payload={
@@ -79,19 +108,6 @@ def invoke_startupscripts():
         p.info(f"adding {service} to startup")
         res = run.run_startup(service_name,service_name,service_dir)
         
-    
-def movetobin():
-    curpath = os.getcwd()
-    binpath = '/usr/bin'
-    rentdrivepath = os.path.join(curpath, 'utils/test.py')
-    p.info(f"rentdrivepath: {rentdrivepath}")
-    try:
-        shutil.copy(rentdrivepath, binpath)
-        p.info("rentdrive.py has been moved to /usr/bin.")
-    except Exception as e:
-        print(f"Error: {e}")
-
-
 
 def check_port():
     try:
