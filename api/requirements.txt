@@ -2,8 +2,4 @@ fastapi[all]
 python-jose
 motor
 bcrypt
-secrets
-typing
-dotenv
-datetime
-pyOpenSSL
+python-dotenv
