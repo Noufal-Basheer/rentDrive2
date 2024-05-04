@@ -1,0 +1,8 @@
+fastapi
+python-jose
+motor
+bcrypt
+secrets
+typing
+dotenv
+datetime
