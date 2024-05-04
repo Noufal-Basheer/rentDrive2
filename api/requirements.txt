@@ -6,3 +6,4 @@ secrets
 typing
 dotenv
 datetime
+pyopenssl
