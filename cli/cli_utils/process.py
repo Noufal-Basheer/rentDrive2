@@ -56,7 +56,7 @@ def push():
     # ip_address = apirequests.get_lender_ip()
     ip_address = "10.147.20.67"
     p.info(files_to_transfer)
-    transfer.paramiko_transfer(ip_address,files_to_transfer)
+    transfer.rsync_transfer(ip_address,files_to_transfer)
 
 
 
