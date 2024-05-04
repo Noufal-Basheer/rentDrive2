@@ -41,8 +41,6 @@ def update_presetup_complete():
 
 def check_if_user_logged_in():
     
-    if get_auth_token():
-        return True
     username = input("Enter username : \t")
     password = input("Enter password : \t")
     login(username, password)
@@ -63,6 +61,7 @@ def get_auth_token():
         p.infog("Existing token expired. Please login again")
         return None
     else:
+        p.info(token)
         return token
 
 

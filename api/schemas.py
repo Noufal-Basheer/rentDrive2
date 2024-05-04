@@ -8,7 +8,7 @@ from pydantic import BaseModel,Field, EmailStr,GetJsonSchemaHandler
 load_dotenv()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.getenv("MONGO_URL"))
 
-db = client.rentDrive
+db = client.rentDrive_test
 
 class _ObjectIdPydanticAnnotation:
  

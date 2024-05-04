@@ -1,8 +1,7 @@
 import logging
 
 import os
-user_path = os.path.expanduser("~")
-LOG_PATH = os.path.join(user_path, ".rentDrive", "Logs")
+LOG_PATH = os.path.join("/opt/.rentdrive", "Logs")
 if not os.path.exists(LOG_PATH):
     os.makedirs(LOG_PATH)
 

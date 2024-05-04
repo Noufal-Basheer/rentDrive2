@@ -1,11 +1,10 @@
 
 import os
 import json
-from logger.logger import setup_logger
-p = setup_logger()
+from logger.logger import p
 
-user_path = os.path.expanduser("~")
-REGISTRY_PATH = os.path.join(user_path,".rentDrive","Registry")
+
+REGISTRY_PATH = os.path.join("/opt/.rentdrive","Registry")
 
 REGISTRY_FILE = '.data'
 REGISTRY_FILE_PATH = os.path.join(REGISTRY_PATH, REGISTRY_FILE)

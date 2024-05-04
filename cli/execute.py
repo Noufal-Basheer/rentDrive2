@@ -13,12 +13,13 @@ if __name__ == "__main__":
     subparsers.add_parser("status", help="Check status")
     subparsers.add_parser("commit", help="commit the files and make it ready to push ")
     subparsers.add_parser("pull", help="Pull files")
-    commit_parser = subparsers.add_parser("push",help="Push the files to server")
-    commit_parser.add_argument("token",help="Auth token")
+    subparsers.add_parser("push",help="Push the files to server")
     subparsers.add_parser("restore", help="Check status")
     config_parser = subparsers.add_parser("config", help="Config your account \t config -u <username> -p <password>")
     config_parser.add_argument("u",  help="username")
     config_parser.add_argument("p",  help="password")
+    commit_parser = subparsers.add_parser("test",help="Push the files to server")
+
 
 
     
@@ -36,14 +37,13 @@ if __name__ == "__main__":
     elif args.command == "commit":
         process.commit()
     elif args.command == "push":
-        if not args.token:
-            p.error("Invalid token")
-            sys.exit(1)
-        process.push(args.token)
+        process.push()
     elif args.command=="restore":
         process.restore()
     elif args.command=="config":
         process.config(args.u,args.p)
+    elif args.command=="test":
+        process.test()
 
         
         

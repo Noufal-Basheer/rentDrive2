@@ -49,6 +49,8 @@ def update_ip_address(address):
     "accept": "application/json",
 }
     params = {"ip_address": address}
+
+    logging.info("Updating database")
     try:
         response = requests.put(url,headers=headers, params=params)
         if response.status_code == 200:
@@ -90,9 +92,10 @@ def ip_fetch():
     while True:
         new_ip = get_ip_address()
         if new_ip and new_ip != current_ip:
-            add_to_essentials("ip_address",new_ip)
-            logging.info("IP address updated: %s", current_ip)
             update_ip_address(new_ip)
+            add_to_essentials("ip_address",new_ip)
+            logging.info("IP address updated: %s", new_ip)
+            
         time.sleep(ten_mins)
 
 if __name__ == "__main__":

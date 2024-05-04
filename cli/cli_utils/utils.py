@@ -167,8 +167,8 @@ def write_to_history(folder_path, folder_name, hash_val):
     time_stamp = time_stamp_obj.strftime("%x") + " " + time_stamp_obj.strftime("%X")
     
     if not os.path.exists(history_file_path):
-        with open(history_file_path, "w"):
-            pass 
+        fd = os.open(history_file_path, os.O_CREAT | os.O_WRONLY)
+        os.close(fd)
     
     with open(history_file_path, "a") as file:
         file.write(f"{time_stamp},{folder_name},{hash_val}\n")

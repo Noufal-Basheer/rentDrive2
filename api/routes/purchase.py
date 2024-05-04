@@ -30,6 +30,7 @@ async def purchase_storage(id: str, current_user=Depends(oauth2.get_current_user
         }
         print("reached here")
         ticket = await db["purchases"].insert_one(purchased_item)
+        await db["market"].update_one({"_id": id}, {"$set": {"sold": True}})
         response = await db["purchases"].find_one({"_id":ticket.inserted_id})
         return response
     except Exception as e:
@@ -50,3 +51,21 @@ async def get_ticket_for_currentuser(current_user=Depends(oauth2.get_current_use
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to find ticket")
 
 
+@router.get("/ip_address",response_model=str)
+async def get_ticket_for_currentuser(id:str,current_user=Depends(oauth2.get_current_user)):
+    try:
+        lender_id = id
+        if len(id) < 23:
+            ticket  = await db["purchases"].find_one({"lentee_id":current_user["_id"]})
+            lender_id = ticket["lender_id"]
+        
+        lender_data = await db["market"].find_one({"lender_id":lender_id})
+       
+        if not lender_data:
+            print(e)
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Colud not retrieve ip_address of lender. No lener found in given id")
+        return lender_data["ip_address"]
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Colud not retrieve ip_address of lender")
+    
