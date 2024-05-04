@@ -35,3 +35,18 @@ async def purchase_storage(id: str, current_user=Depends(oauth2.get_current_user
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to create ticket")
+
+
+@router.get("/id",response_model=PurchasedContentResponse)
+async def get_ticket_for_currentuser(current_user=Depends(oauth2.get_current_user)):
+    try:
+        ticket  = await db["purchases"].find_one({"lentee_id":current_user["_id"]})
+        if not ticket:
+            print(e)
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="No tickets found")
+        return ticket
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to find ticket")
+
+
