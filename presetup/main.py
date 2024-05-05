@@ -32,7 +32,8 @@ def main():
 
     command = sys.argv[1:]
     if not command:
-        print("No command provided. Using default command 'python3 execute.py'")
+        command=['python3', 'execute.py'] 
+    else:
         command = ['python3', 'execute.py'] + sys.argv[1:]
 
     run_command(command)

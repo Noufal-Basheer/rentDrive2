@@ -5,18 +5,25 @@ from datetime import datetime, timedelta
 from utils import runstartupservice as run
 import socket,subprocess,sys
 from utils import createParttiton as cp
-
+from utils import samba 
+import random,string
 PORT=4444
 
 BASE_URL = "http://127.0.0.1:8000"
 
-def process():
-    check_if_user_logged_in()
+def process(nfs=False):
+    p.info(f"nfs : {nfs}")
+    if not nfs:
+        check_if_user_logged_in()
     add_to_essentials("zerotier-id","856127940c5f3e4d")
     enable_port4444()
     invoke_startupscripts()
     create_rentdrive_user()
-    update_presetup_complete()
+    if nfs:
+        samba.setup_samba_share("/home/rentdrive","rentdrive")
+        sys.exit(0)
+    if not nfs:
+        update_presetup_complete()
     
 def update_presetup_complete():
     url = BASE_URL + "/marketplace/presetup_done"

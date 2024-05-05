@@ -18,18 +18,17 @@ def set_registry(key, value):
         registry_data = load_registry()
         registry_data[key] = value
         save_registry(registry_data)
-        print("saved")
+        p.info("saved")
     except Exception as e:
-        print(f"Error setting registry entry: {e}")
+        p.info(f"Error setting registry entry: {e}")
 
 def get_registry(key):
     try:
         registry_data = load_registry()
         value = registry_data.get(key)
-        print(f"Registry entry retrieved - Key: {key}, Value: {value}")
         return value
     except Exception as e:
-        print(f"Error getting registry entry: {e}")
+        p.info(f"Error getting registry entry: {e}")
         return None
 
 def load_registry():

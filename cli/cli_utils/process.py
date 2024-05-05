@@ -28,7 +28,6 @@ def commit():
     utils.gpg_encrypt_file(FOLDER_PATH,FOLDER_NAME)
     shutil.rmtree(FOLDER_PATH)
     #api to store hash value
-    
     return True         
             
 
@@ -38,8 +37,16 @@ def status():
     
 
 def pull():
-    p.info("pull")
-    #api to do scp from lentee to lender
+    p.info("Processing..")
+    # ip_address = apirequests.get_lender_ip()
+    ip_address = "10.147.20.5"
+    # p.info(files_to_transfer)
+    if transfer.ping(ip_address):
+        p.info("Server is up ...")
+        p.info("Initiating transfer ...")
+        transfer.rsync_transfer_back(ip_address)
+    else:
+        p.info("Machine is unreachable")
 
     
 def push():
@@ -54,10 +61,15 @@ def push():
             files_to_transfer.append(os.path.join(DATA_PATH,item))
     p.info("Processing..")
     # ip_address = apirequests.get_lender_ip()
-    ip_address = "10.147.20.67"
+    ip_address = "10.147.20.5"
     p.info(files_to_transfer)
-    transfer.rsync_transfer(ip_address,files_to_transfer)
-
+    if transfer.ping(ip_address):
+        p.info("Server is up ...")
+        p.info("Initiating transfer ...")
+        if not transfer.rsync_transfer(ip_address,files_to_transfer):
+            transfer.paramiko_transfer(ip_address,files_to_transfer)
+    else:
+        p.info("Machine is unreachable")
 
 
 def restore():
