@@ -49,20 +49,27 @@ def pull():
         p.info("Machine is unreachable")
 
     
-def push():
-    if not registry.get_registry("ticket_id"):
-        p.info("No ative tickets found")
-        return 
-    files_to_transfer = []
-    for item in os.listdir(DATA_PATH):
-        if item.endswith(".gpg"):
-            hash = utils.compute_file_hash(os.path.join(DATA_PATH,item))
-            utils.write_to_history(os.path.join(USER_PATH,".rentdrive"),item,hash)
+def push(nfs=False,ip=None):
+    if not nfs:
+        if not registry.get_registry("ticket_id"):
+            p.info("No ative tickets found")
+            return 
+        files_to_transfer = []
+        for item in os.listdir(DATA_PATH):
+            if item.endswith(".gpg"):
+                hash = utils.compute_file_hash(os.path.join(DATA_PATH,item))
+                utils.write_to_history(os.path.join(USER_PATH,".rentdrive"),item,hash)
+                files_to_transfer.append(os.path.join(DATA_PATH,item))
+        # ip_address = apirequests.get_lender_ip()
+        p.info("Processing..")
+        ip_address = "10.147.20.5"
+        p.info(files_to_transfer)
+    if nfs:
+        ip_address = ip
+        files_to_transfer = []
+        for item in os.listdir(DATA_PATH):
             files_to_transfer.append(os.path.join(DATA_PATH,item))
-    p.info("Processing..")
-    # ip_address = apirequests.get_lender_ip()
-    ip_address = "10.147.20.5"
-    p.info(files_to_transfer)
+            
     if transfer.ping(ip_address):
         p.info("Server is up ...")
         p.info("Initiating transfer ...")

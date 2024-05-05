@@ -12,11 +12,10 @@ PORT=4444
 BASE_URL = "http://127.0.0.1:8000"
 
 def process(nfs=False):
-    p.info(f"nfs : {nfs}")
     if not nfs:
         check_if_user_logged_in()
+        enable_port4444()
     add_to_essentials("zerotier-id","856127940c5f3e4d")
-    enable_port4444()
     invoke_startupscripts()
     create_rentdrive_user()
     if nfs:

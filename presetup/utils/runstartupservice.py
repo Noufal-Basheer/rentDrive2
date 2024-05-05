@@ -6,7 +6,7 @@ from logger.logger import p
 
 def create_systemd_service(service_name,desc):
     script_path = f"/opt/.rentdriveservices/{service_name}.py"
-    p.info(f"helloooi {script_path}")
+    p.info(f"Setting script path for service : {service_name} : {script_path}")
     """
     to create startup services
     there are 2 startup service , 1 to fetch ip and update database and other for port

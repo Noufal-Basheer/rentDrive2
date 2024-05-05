@@ -13,7 +13,9 @@ if __name__ == "__main__":
     subparsers.add_parser("status", help="Check status")
     subparsers.add_parser("commit", help="commit the files and make it ready to push ")
     subparsers.add_parser("pull", help="Pull files")
-    subparsers.add_parser("push",help="Push the files to server")
+    push_Parser = subparsers.add_parser("push",help="Push the files to server")
+    push_Parser.add_argument("nfs", choices=['nfs'], help="password")
+    push_Parser.add_argument("ip",help="password")
     subparsers.add_parser("restore", help="Check status")
     config_parser = subparsers.add_parser("config", help="Config your account \t config -u <username> -p <password>")
     config_parser.add_argument("u",  help="username")
@@ -37,7 +39,13 @@ if __name__ == "__main__":
     elif args.command == "commit":
         process.commit()
     elif args.command == "push":
-        process.push()
+        if args.nfs:
+            if not args.ip:
+                p.info("Enter a valid ip address")
+                sys.exit(0)
+            process.push(True,args.ip)
+        else:
+            process.push()
     elif args.command=="restore":
         process.restore()
     elif args.command=="config":
