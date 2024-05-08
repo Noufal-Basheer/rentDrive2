@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="background-color: whitesmoke; width: 30%;  border-radius: 4%;  margin: 100px auto; outline: auto; outline-color: black; padding: 20px;" >
+    <div class="content-section" style="background-color: whitesmoke; width: 100%; padding: 50px; border-radius: 4%; ">
+        <form method="POST" action="/signin">
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4" style="color:black; font-size: 40px; font-weight: 1000; ">Login</legend>
+                <div class="form-group" style="color:black; font-size: 18px; font-weight: 800; margin-bottom: 20px;">
+                    <label for="username" class="form-control-label">Username</label>
+                    <input type="text" name="username" id="username" class="form-control form-control-lg" required>
+                </div>
+                <div class="form-group" style="color:black; font-size: 18px; font-weight: 800; margin-bottom: 20px;">
+                    <label for="password" class="form-control-label">Password</label>
+                    <input type="password" name="password" id="password" class="form-control form-control-lg" required>
+                </div>
+            </fieldset>
+            <div class="form-group" >
+                <button type="submit" class="btn btn-outline-info" style="width: 80%; text-align: center; margin: 20px 70px; font-weight: 900; font-size: 20px; background-color: #1e025f;" onmouseover="this.style.backgroundColor='black'; this.style.color='white'" onmouseout="this.style.backgroundColor='#1e025f'; this.style.color='white'">Login</button>
+            </div>
+            <small class="text-muted ml-2">
+                <a href="#">Forgot Password?</a>
+            </small>
+        </form>
+    </div>
+    <div class="">
+        <small class="" style="color:black ">
+           Don't have an account? <a class="ml-2" href="{{ url_for('register') }}">Sign Up Now</a>
+        </small>
+    </div>
+    </div>
+{% endblock content %}

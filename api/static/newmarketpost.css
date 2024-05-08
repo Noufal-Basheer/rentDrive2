@@ -1,0 +1,29 @@
+.slider-container {
+    display: flex;
+    align-items: center;
+}
+
+.slider {
+    flex-grow: 1;
+    margin-right: 100px;
+}
+.letter{
+    width: 500px;
+}
+.text-box {
+    width: 50px; /* Adjust width as needed */
+}
+.slider-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .slider {
+            flex-grow: 1;
+            margin-right: 100px;
+            width: 700px;
+        }
+
+        .text-box {
+            width: 100px; /* Adjust width as needed */
+        }

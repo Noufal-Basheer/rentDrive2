@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="info d-flex align-items-center">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 text-center">
+        {% if curr_user %}
+          <h2 data-aos="fade-down" style="font-size: 50px;">Welcome to RentDrive, {{ curr_user['name']}}</h2>
+        {% else %}
+          <h2 data-aos="fade-down" style="font-size: 50px;">Welcome to RentDrive</h2>
+        {% endif %}
+          <p data-aos="fade-up">RentDrive is a local storage sharing platform designed to facilitate the renting and borrowing of storage space between users within a community or network.</p>
+        <a data-aos="fade-up" data-aos-delay="200" href="#get-started" class="btn-get-started">Get Started</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block main %}
+
+<main id="main">
+  <!-- ======= Get Started Section ======= -->
+  <section id="get-started" class="get-started section-bg">
+    <div class="container">
+
+      <div class="row justify-content-between gy-4">
+        {% if curr_user == None %}
+        <div class="col-lg-6 d-flex align-items-center" data-aos="fade-up">
+          <div class="content">
+            <h3>Register Now.</h3>
+            
+          </div>
+         </div>
+        
+          <div style=" width: 40%;  border-radius: 4%;  margin: 100px auto; padding: 20px; " data-aos="fade-up" >
+            <div class="content-section" style="background-color: whitesmoke; width: 100%; padding: 30px; border-radius: 4%; ">
+                <form method="POST" action="/registration/nr">
+                    <fieldset class="form-group">
+                        <legend class="border-bottom mb-4" style="color:black; font-size: 40px; font-weight: 1000; ">Register</legend>
+                        <div class="form-group" style="color:black; font-size: 18px; font-weight: 800; margin-bottom: 20px;">
+                            <label for="name" class="form-control-label">Username</label>
+                            <input type="text" name="name" id="name" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group" style="color:black; font-size: 18px; font-weight: 800; margin-bottom: 20px;">
+                            <label for="email" class="form-control-label">Email</label>
+                            <input type="email" name="email" id="email" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group" style="color:black; font-size: 18px; font-weight: 800; margin-bottom: 20px;">
+                            <label for="password" class="form-control-label">Password</label>
+                            <input type="password" name="password" id="password" class="form-control form-control-lg" required>
+                        </div>
+                        <div class="form-group" style="color:black; font-size: 18px; font-weight: 800; margin-bottom: 20px;">
+                            <label for="confirm_password" class="form-control-label">Confirm Password</label>
+                            <input type="password" name="confirm_password" id="confirm_password" class="form-control form-control-lg" required>
+                        </div>
+                    </fieldset>
+                    <div class="form-group" >
+                        <button type="submit" class="btn btn-outline-info" style="width: 80%; text-align: center;margin: 35px; font-weight: 900; font-size: 20px; background-color: #1e025f;" onmouseover="this.style.backgroundColor='black'; this.style.color='white'" onmouseout="this.style.backgroundColor='#1e025f'; this.style.color='white'">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="">
+                <small class="" style="color:black">
+                   Already have an account? <a class="ml-2" href="{{ url_for('login') }}">Sign in Now</a>
+                </small>
+            </div>
+        </div>
+      
+        {% else %}
+        <div class="col-lg-6 d-flex align-items-center" style="display: flex;" data-aos="fade-up">
+          <div class="content" >
+            <h3 style="color: black;">Let's kickstart our application setup by downloading some essential files.  </h3>
+          </div>
+        </div>
+        <div style=" display: flex; width: 40%;  border-radius: 4%;  margin: 100px auto;  " data-aos="fade-up" >
+          <div style="background-color: whitesmoke; width: 100%; padding-top: 100px; border-radius: 4%; ">
+            <a href="/download" download>
+            <button class="button-27" role="button" >Download application</button>
+            </a>
+            </div>
+         </div>
+        {% endif %}
+    </div>
+  </section><!-- End Get Started Section -->
+</main>
+{% endblock %}
