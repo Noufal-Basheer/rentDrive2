@@ -8,7 +8,7 @@ from pydantic import BaseModel,Field, EmailStr,GetJsonSchemaHandler
 load_dotenv()
 client = motor.motor_asyncio.AsyncIOMotorClient(os.getenv("MONGO_URL"))
 
-db = client.rentDrive_test
+db = client.rentDrive_test1
 
 class _ObjectIdPydanticAnnotation:
  
@@ -78,6 +78,7 @@ class MarketContent(BaseModel):
     description: str = Field(...)
     max_size:str = Field(...)
     lending_period:str = Field(...)
+    price: str = Field(...)
 
     class Config:
         allowed_population_by_field_name = True
@@ -99,6 +100,7 @@ class MarketContentResponse(BaseModel):
     created_at : str = Field(...)
     max_size : str = Field(...)
     lending_period:str = Field(...)
+    price:str = Field(...)
     presetup_done:bool=Field(...)
     sold:bool=Field(...)
     class Config:
@@ -114,6 +116,7 @@ class MarketContentResponse(BaseModel):
                 "created_at"  : "date created ",
                 "max_size":"50000000",
                 "lending_period":"30 days",
+                "price":"500",
                 "presetup_done":"verify if presetup done",
                 "sold":"verify if already taken"
 

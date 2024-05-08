@@ -22,7 +22,7 @@ def create_access_token(payload:Dict):
     to_encode.update({"exp":expiration_time})
 
     jw_token = jwt.encode(to_encode,key=SECRET,algorithm=ALGO)
-
+    print(jw_token)
     return jw_token
 
 
@@ -30,7 +30,7 @@ def verify_access_token(token:str,credential_exception):
     try:
         payload = jwt.decode(token,key=SECRET,algorithms=[ALGO])
         id : str = payload.get("id")
-
+        
         if not id:
             raise credential_exception
         
