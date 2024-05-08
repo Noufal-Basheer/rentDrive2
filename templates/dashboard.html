@@ -6,25 +6,91 @@
 <br>
 <h1 style="text-align: center; font-size: 70px;">Tickets</h1>
 <hr>
-{% if False %}
+{% if ticket == None %}
 <div class="container" style="width: 100%; position: absolute; top: 50%;left: 50%;transform: translate(-50%, -50%); text-align: center; background-color: white;">
     <h3> No Live Tickets </h3>
     Please visit the marketplace to rent storage.
 </div>
 {% else %}
-<div class="container"> </div>
-<h3>Ticket Status: &nbsp &nbsp 
-    <span style="font-size: 24px;"> 
-        {% if True %}
-        <img width="20" height="20" src="https://img.icons8.com/color/48/connection-status-on--v1.png" alt="connection-status-on--v1"/> Active 
-        {% else %}
-        <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/FA5252/connection-status-on.png" alt="connection-status-on"/> Expired
-        {% endif %}
-    </span> 
-    
-</h3>
+<style>
+        .details {
+            width: 0; /* Initially hidden */
+            margin: 100px auto;
+            background-color: #ffffff;
+            padding: 50px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: x-large;
+            position: relative;
+            opacity: 0; /* Initially invisible */
+            transition: width 0.4s ease-in-out, opacity 0.4s ease-in-out; /* Fade-in transition */
+        }
 
+        .details.active {
+            width: 800px; /* Adjust the width as needed */
+            opacity: 1; /* Fade in */
+        }
+</style>
+        <div class="details">
+        <h2>Ticket Status: &nbsp &nbsp 
+            <span style="font-size: 24px;"> 
+                {% if True %}
+                <img width="30" height="30" src="https://img.icons8.com/color/48/connection-status-on--v1.png" alt="connection-status-on--v1"/> Active 
+                {% else %}
+                <img width="30" height="30" src="https://img.icons8.com/ios-glyphs/30/FA5252/connection-status-on.png" alt="connection-status-on"/> Expired
+                {% endif %}
+            </span> </h2>
+            <br>
+
+        <p><strong>Lender Name:</strong> {{ lender_data['name']}}</p>
+        <p><strong>Date of Expiry:</strong> {{ ticket['end_date'] }}</p>
+        <p><strong>Remaining Storage:</strong> {{ticket['remaining_storage']}} GB</p>
+        <p><strong>Max Size:</strong> {{ market_entry['max_size'] }} GB</p>
+        <p><strong>Price:</strong> {{ market_entry['price']}}</p>
+        <button class="button-28" id="button-28" style="display: none; margin-bottom: 10px;" onclick="toggleDescription()">Expand Description</button>
+        <div id="description" style="display: none;">
+            <p>{{market_entry["description"]}}</p>
+        </div>
+    </div>
+    
 </div>
+    
+
+
+<script>
+    const container = document.querySelector('.details');
+    const expandBtn = document.getElementById('button-28');
+    const details = document.querySelector('.details');
+    const description = document.getElementById('description');
+    container.addEventListener('mouseenter', () => {
+        container.style.backgroundColor = '#ffffff';
+        container.style.borderColor = '#007bff';
+        container.style.transform = 'scale(1.2)';
+        expandBtn.style.display = 'block';
+    });
+
+    container.addEventListener('mouseleave', () => {
+        container.style.backgroundColor = '#ffffff';
+        container.style.borderColor = 'transparent';
+        container.style.transform = 'scale(1)';
+        expandBtn.style.display = 'none';
+    });
+    function toggleDescription() {
+
+        
+        if (description.style.display === 'none') {
+            description.style.display = 'block';
+            description.style.width = '300px'; // Set the width you desire
+            expandBtn.textContent = 'Hide Description';
+        } else {
+            description.style.display = 'none';
+            description.style.width = '0';
+            expandBtn.textContent = 'Expand Description';
+        }}
+        window.onload = function() {
+        details.classList.add('active'); // Apply the 'active' class to the details container
+    };
+</script>
 {% endif %}
 
 {% endblock %}
