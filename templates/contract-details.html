@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div style="padding-left:200px; padding-right: 200px; max-width:100%;  height: 100vmax; margin-top: -150px; justify-content: center; align-items: center; background-color: white;" >
+    <div class="container" style="background-color: whitesmoke; width: 100%;">
+    <br>
+    <br>
+        
+        {% if ct == 'lentee_contract' %}
+            <h1>Lentee Details : </h1>
+            <hr>
+            <br>
+
+            <h2> Lentee Name: {{ contract['lentee_name'] }}</h2>
+            <h2> Lentee Email: {{ contract['lentee_email']}}</h2>
+            
+            <hr>
+            <br>
+
+            <h1>Contract Details : </h1>
+            
+            <h2>Total Storage : {{ contract['storage_offered']}} GB</h2>
+            <h2>Usage :   x out of {{ contract['storage_offered']}} GB</h2>
+            <h2>Validity : {{contract['validity']}} </h2>
+            
+
+        {% endif %}    
+        
+        {% if ct == 'lender_contract' %}
+
+        {% endif %}
+    
+    </div>
+</div>
+{% endblock %}

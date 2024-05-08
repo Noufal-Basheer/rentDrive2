@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+    th, td {
+      padding: 10px;
+      text-align: center;
+    }
+    th {
+        font-size: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid black;
+    }
+    </style>
+<div style="padding-left:200px; padding-right: 200px; background-color: white;  height: 100vmax; justify-content: center; align-items: center; color: black;" >
+    
+        <br>
+        <h1 style="text-align: center; font-size: 60px;">MarketPlace</h1>
+        <hr>    
+        <br>
+        <br>
+        <div class="records table-responsive">
+            <br>
+
+                </div>
+                    <table width="100%">
+                            <thead>
+                                <tr>
+                                    <th>NO. </th>
+                                    <th><span class="las la-sort"></span> CLIENT</th>
+                                    <th><span class="las la-sort"></span> STORAGE OFFERED (GB) </th>
+                                    <th><span class="las la-sort"></span> DATE POSTED</th>
+                                    <th><span class="las la-sort"></span> VALIDITY (days) </th>
+                                    <th><span class="las la-sort"></span> PRICE</th>
+                                    <th><span class="las la-sort"></span> BUY</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                               {%  for entry in market_content %}
+                                <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>
+                                        <div class="client">
+                                            <div class="client-info">
+                                                <h4>{{entry.lender_name}}</h4>
+                                                <small>{{entry.email}}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{entry.max_size}}
+                                    </td>
+                                    <td>
+                                        {{entry.created_at}}
+                                    </td>
+                                    <td>
+                                        {{entry.lending_period}}
+                                    </td>
+
+                                    <td>
+                                        {{entry.price}}
+                                    </td>
+                                    <div class="record-header">
+                                        <div class="add">
+                                            <td><input type="submit" value="BUY" onclick="Itemclick('{{entry._id}}')" class="btn"></td>
+                                        </div>
+                                    </div>
+                                </tr>
+                             
+                                {% endfor %}
+                                
+                            </tbody>
+                        </table>
+    </div>
+</div>
+
+<script>
+    function Itemclick(uid) {
+         var Data= {
+            id : uid 
+         };
+            fetch('/paymentgate?id=' + uid, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            })
+            .then(response => {
+                
+                if (response.ok) {
+                    console.log('Data sent successfully');
+                    window.location.href='/paymentgate?id='+uid
+                } else {
+                    console.error(response.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        
+        }
+</script>
+{%endblock%}
+
+
+
+
+{% block sidebar %}
+{% endblock %}

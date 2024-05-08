@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" integrity="sha256-2XFplPlrFClt0bIdPgpz8H7ojnk10H69xRqd9+uTShA=" crossorigin="anonymous" />
+<link rel="stylesheet" href="{{url_for('static',filename='account.css')}}" />
+
+
+{% block content %}
+<div class="container" style="padding-left:200px; padding-right: 200px; max-width:100%;  height: 100vmax; margin-top: -150px; justify-content: center; align-items: center; background-color: white;">
+<div class="row">
+		<div class="col-12">
+			<!-- Page title -->
+			<div class="my-5">
+				<h1>My Profile</h1>
+				<hr>
+				<br>
+				<h3>UserName: </h3>
+				<h3>Email: </h3>
+				<hr>
+			</div>
+			<!-- Form START -->
+
+			<form method="POST" action="" class="file-upload">
+				<div class="row mb-5 gx-5">
+					<h4>Edit User Details</h4>
+					<!-- User detail -->
+					<div class="col-xxl-8 mb-5 mb-xxl-0">
+						<div class="bg-secondary-soft px-4 py-5 rounded">
+							<div class="row g-3">
+								<!-- User Name -->
+								<div class="col-md-6">
+									<label class="form-label">User Name</label>
+									<input type="text" class="form-control" placeholder="" aria-label="Username" value="">
+								</div>
+								<!-- Email -->
+								<div class="col-md-6">
+									<label for="inputEmail4" class="form-label">Email *</label>
+									<input type="email" class="form-control" id="inputEmail4" value="">
+								</div>
+							</div> <!-- Row END -->
+						</div>
+					</div>
+					<!-- Upload profile -->
+
+					<!-- change password -->
+					<div class="col-xxl-6">
+						<div class="bg-secondary-soft px-4 py-5 rounded">
+							<div class="row g-3">
+								<h4 class="my-4">Change Password</h4>
+								<!-- Old password -->
+								<div class="col-md-6">
+									<label for="exampleInputPassword1" class="form-label">Old password *</label>
+									<input type="password" class="form-control" id="exampleInputPassword1">
+								</div>
+								<!-- New password -->
+								<div class="col-md-6">
+									<label for="exampleInputPassword2" class="form-label">New password *</label>
+									<input type="password" class="form-control" id="exampleInputPassword2">
+								</div>
+								<!-- Confirm password -->
+								<div class="col-md-12">
+									<label for="exampleInputPassword3" class="form-label">Confirm Password *</label>
+									<input type="password" class="form-control" id="exampleInputPassword3">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> <!-- Row END -->
+				<!-- button -->
+				<div class="gap-3 d-md-flex justify-content-md-end text-center">
+					<button type="button" class="btn btn-danger btn-lg" formaction="/delete">Delete profile</button>
+					<button type="button" class="btn btn-primary btn-lg" formaction="/update">Update profile</button>
+				</div>
+			</form> <!-- Form END -->
+		</div>
+	</div>
+	</div>
+
+	{% endblock %}
