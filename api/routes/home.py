@@ -174,8 +174,8 @@ async def downloadspage(request: Request,access_token: str = Cookie(None)):
 @router.get("/downloadpresetup", response_class = FileResponse)
 async def download_tar_file():
     # Replace 'file.tar' with the name of your tar file
-    file_path = "api/rentdrive-presetup.tar"
-    return FileResponse(file_path, media_type="application/octet-stream", filename="rentdrive-presetup.tar")
+    file_path = "api/rentdrive-presetup.tar.gz"
+    return FileResponse(file_path, media_type="application/octet-stream", filename="rentdrive-presetup.tar.gz")
 @router.get("/downloadcliutils", response_class = FileResponse)
 async def download_tar_file():
     # Replace 'file.tar' with the name of your tar file

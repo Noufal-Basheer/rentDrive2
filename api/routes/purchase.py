@@ -30,7 +30,7 @@ async def purchase_storage(id: str, current_user=Depends(oauth2.get_current_user
             "end_date": str(datetime.datetime.utcnow() + datetime.timedelta(days=30))
         }
 
-        ticket = await db["purchases"].insert_one(jsonable_encoder())
+        ticket = await db["purchases"].insert_one(jsonable_encoder(purchased_item))
         await db["market"].update_one({"_id": id}, {"$set": {"sold": True}})
         response = await db["purchases"].find_one({"_id":ticket.inserted_id})
         return response
