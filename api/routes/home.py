@@ -166,7 +166,7 @@ def signout(request: Request, access_token: str = Cookie(None)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access token not found")
 
 
-@router.get("/downlaodspage", response_class=HTMLResponse)
+@router.get("/downloadspage", response_class=HTMLResponse)
 async def downloadspage(request: Request,access_token: str = Cookie(None)):
     return templates.TemplateResponse('/downloads.html',{"request":request} )    
 
