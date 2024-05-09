@@ -66,7 +66,7 @@ async def marketplaceitems(request: Request,access_token: str = Cookie(None)):
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access token not found")
         # market_content = await get_blogs()
         limit =10 
-        market_content = await db["market"].find({"sold":False}).to_list(limit)
+        market_content = await db["market"].find({"sold":False, "presetup_done":True}).to_list(limit)
 
         return templates.TemplateResponse("/marketplace.html",{"request":request, "market_content":market_content, "access_token":access_token })
         
