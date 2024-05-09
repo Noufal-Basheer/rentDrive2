@@ -10,9 +10,62 @@
         padding-bottom: 10px;
         border-bottom: 1px solid black;
     }
+    .add-button {
+    position: relative;
+    margin-top: auto;
+    top: 40px;
+    right: -1500px;
+    width: 60px;
+    height: 60px;
+    background-color: black;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    font-size: 25px;
+    cursor: pointer;
+    transition: width 0.4s ease-in-out, padding-right 0.4s ease-in-out; 
+    overflow: hidden; 
+    font-weight: bolder;
+}
+
+.add-button:hover {
+    background-color: black;
+    transform: scale(1.1);
+    height: 50px;
+    border-radius: 4%;
+    width: 250px; 
+    margin: auto;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.add-button-label {
+    position: absolute;
+    top: -40px;
+    right: calc(100% + 10px);
+    width: max-content;
+    padding: 6px;
+    background-color: black;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease-in-out;
+    font-weight: bolder;
+
+}
+
+.show-label {
+    opacity: 1;
+}
+
     </style>
-<div style="padding-left:200px; padding-right: 200px; background-color: white;  height: 100vmax; justify-content: center; align-items: center; color: black;" >
-    
+<div class="market" style="padding-left:200px; padding-right: 200px; background-color: white; height:50vmax; justify-content: center; align-items: center; color: black;" >
+        <a href="/newmarketpost">
+            <button class="add-button" onmouseover="expandButton()" onmouseout="resetButton()">+</button>
+        </a>
         <br>
         <h1 style="text-align: center; font-size: 60px;">MarketPlace</h1>
         <hr>    
@@ -98,6 +151,16 @@
             });
         
         }
+    function expandButton() {
+    var addButton = document.querySelector('.add-button');
+    addButton.textContent = "Add new Marketpost";
+}
+
+function resetButton() {
+    var addButton = document.querySelector('.add-button');
+    addButton.textContent = "+";
+}
+;
 </script>
 {%endblock%}
 

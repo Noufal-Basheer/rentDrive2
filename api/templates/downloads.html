@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px;
+}
+
+.download-container {
+    width: 100%; /* Updated width to 70% */
+    max-width: 1000px; /* Added max-width to limit the container width */
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+   
+    
+}
+
+.download-container:hover {
+    transform: translateY(-5px);
+}
+
+.download-label {
+    margin-bottom: 15px;
+    font-size: 60px;
+    color: #333;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-weight: bolder;
+}
+
+.download-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 24px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+</style>
+
+<div class="heading" style=" padding-top: 50px; font-size: 100px; text-align: center; color: white; font-weight: bolder; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; ">
+    RentDrive
+</div>
+</div>
+    <div class="container">
+        <div class="download-container">
+            <h2 class="download-label">Presetup</h2>
+            <p style="text-align: center;"> v1.0</p>
+            <p style="text-align: center; padding-bottom: 40px; font-size: 20px; color: black;"> <br>
+                This package is intended for all users using the platform. 
+                Download and extract the package and run the binary file to configure Presetup</p>
+                <a href="/downloadpresetup" download>
+                <button class="button-27" >Download</button>
+                </a>
+        </div>
+        <div class="download-container">
+            <h2 class="download-label">Client</h2>
+            <p style="text-align: center;"> v1.0</p>
+            <p style="text-align: center; padding-bottom: 40px; font-size: 20px; color: black;"> <br>
+                This package is intended for client users.
+                Download and extract the package and run the binary file to configure client-utils</p>
+                <a href="/downloadcliutils" download>
+                <button class="button-27">Download</button>
+                </a>
+        </div>
+
+    </div>
+<div class="container" style="color: white; font-size: 20px; padding: 10px;">
+    <table width="100%" style="border-collapse: collapse; border: 1px solid #ccc;" >
+        <thead>
+            <tr>
+                <th><span class="las la-sort"></span> Version </th>
+                <th><span class="las la-sort"></span> Release </th>
+                <th><span class="las la-sort"></span> Date of release</th>
+                <th><span class="las la-sort"></span> Description </th>
+            </tr>
+        </thead>
+        <tbody>
+           <tr>
+                <td>v1.0</td>
+                <td>Presetup</td>
+                <td>8th May, 2024</td>
+                <td>Presetup configuration files</td>
+           </tr>
+           <tr>
+            <td>v1.0</td>
+            <td>Client Utils</td>
+            <td>8th May, 2024</td>
+            <td>Client configuration files</td>
+           </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+

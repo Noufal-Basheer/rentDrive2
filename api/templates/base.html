@@ -51,18 +51,17 @@
       <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{url_for('home')}}" class="active">Home</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 20px; text-transform: none;"href="{{url_for('home')}}" class="active">Home</a></li>
           {% if access_token != None %}
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"  href="{{ url_for('dashboard') }}">Dashboard</a> </li>
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{ url_for('marketplaceitems') }}">Marketplace</a></li>
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{ url_for('newmarketpost') }}">Post New Storage</a></li>
-
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{url_for('signout')}}">Logout</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"  href="{{ url_for('dashboard') }}">Dashboard</a> </li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"href="{{ url_for('marketplaceitems') }}">Marketplace</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"href="{{ url_for('downloadspage') }}">Downlaods</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"href="{{url_for('signout')}}">Logout</a></li>
           {% else %}
           
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{ url_for('about') }}">About</a></li>
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{url_for('register')}}">Register</a></li>
-          <li><a class="nav-item nav-link" style="font-size: 17px; text-transform: none;"href="{{url_for('signin')}}">Login</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"href="{{ url_for('about') }}">About</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"href="{{url_for('register')}}">Register</a></li>
+          <li><a class="nav-item nav-link" style="font-size: 19px; text-transform: none;"href="{{url_for('signin')}}">Login</a></li>
           
           {% endif %}
           

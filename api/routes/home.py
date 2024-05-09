@@ -166,13 +166,21 @@ def signout(request: Request, access_token: str = Cookie(None)):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Access token not found")
 
 
+@router.get("/downlaodspage", response_class=HTMLResponse)
+async def downloadspage(request: Request,access_token: str = Cookie(None)):
+    return templates.TemplateResponse('/downloads.html',{"request":request} )    
 
-@router.get("/download", response_class = FileResponse)
+
+@router.get("/downloadpresetup", response_class = FileResponse)
 async def download_tar_file():
     # Replace 'file.tar' with the name of your tar file
     file_path = "api/rentdrive-presetup.tar"
     return FileResponse(file_path, media_type="application/octet-stream", filename="rentdrive-presetup.tar")
-
+@router.get("/downloadcliutils", response_class = FileResponse)
+async def download_tar_file():
+    # Replace 'file.tar' with the name of your tar file
+    file_path = "api/rentdrive-cli.tar"
+    return FileResponse(file_path, media_type="application/octet-stream", filename="rentdrive-cli.tar")
 
 # @router.get("/account", response_class=HTMLResponse, include_in_schema= False)
 # def account(request: Request, access_token: str = Cookie(None)):
