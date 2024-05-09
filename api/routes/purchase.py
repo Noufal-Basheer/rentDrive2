@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException,status
-from ..schemas import db,PurchasedContentResponse,PurchasedContent
+from ..schemas import db,PurchasedContentResponse,UpdatePurchasedContent
 from fastapi.encoders import jsonable_encoder
 from .. import oauth2
 import datetime
+from bson import ObjectId
 from typing import List
 router = APIRouter(
     prefix="/purchase",
@@ -19,7 +20,7 @@ async def purchase_storage(id: str, current_user=Depends(oauth2.get_current_user
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Already in use")
         if market_item["lender_id"] == current_user["_id"]:
             raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Lender and lentee cannot be same")
-
+        
         purchased_item = {
             "lentee_id": current_user["_id"],
             "lender_id": market_item["lender_id"],
@@ -28,8 +29,8 @@ async def purchase_storage(id: str, current_user=Depends(oauth2.get_current_user
             "remaining_storage": market_item["max_size"],
             "end_date": str(datetime.datetime.utcnow() + datetime.timedelta(days=30))
         }
-        print("reached here")
-        ticket = await db["purchases"].insert_one(purchased_item)
+
+        ticket = await db["purchases"].insert_one(jsonable_encoder())
         await db["market"].update_one({"_id": id}, {"$set": {"sold": True}})
         response = await db["purchases"].find_one({"_id":ticket.inserted_id})
         return response
@@ -68,4 +69,22 @@ async def get_ticket_for_currentuser(id:str,current_user=Depends(oauth2.get_curr
     except Exception as e:
         print(e)
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Colud not retrieve ip_address of lender")
+
+
+@router.put("/remaining_size")
+async def update_remainig_size(data:UpdatePurchasedContent,current_user=Depends(oauth2.get_current_user) ):
+    try:
+        current_ticket = await db["purchases"].find_one({"_id":ObjectId(data.ticket_id),"lentee_id":current_user["_id"]})
+        print(current_ticket)
+        current_size = current_ticket["remaining_storage"]
+        if int(current_size)<int(data.size):
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Storage is full. Please pull the existing files first")
+        if not current_ticket:
+            raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Colud not retrieve ticket details. try again later")
+
+        await db["purchases"].update_one({"_id":current_ticket["_id"]}, {"$set": {"remaining_storage": str(int(current_size)-int(data.size))}})
+        return True
+    except Exception as e:
+        print(e)
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal Error Occured")
     

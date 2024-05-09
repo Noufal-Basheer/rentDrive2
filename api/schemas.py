@@ -23,7 +23,6 @@ class _ObjectIdPydanticAnnotation:
 
         return core_schema.union_schema(
             [
-                # check if it's an instance first before doing any further work
                 core_schema.is_instance_schema(ObjectId),
                 core_schema.no_info_plain_validator_function(validate_from_str),
             ],
@@ -100,7 +99,6 @@ class MarketContentResponse(BaseModel):
     created_at : str = Field(...)
     max_size : str = Field(...)
     lending_period:str = Field(...)
-    price:str = Field(...)
     presetup_done:bool=Field(...)
     sold:bool=Field(...)
     class Config:
@@ -116,7 +114,6 @@ class MarketContentResponse(BaseModel):
                 "created_at"  : "date created ",
                 "max_size":"50000000",
                 "lending_period":"30 days",
-                "price":"500",
                 "presetup_done":"verify if presetup done",
                 "sold":"verify if already taken"
 
@@ -157,5 +154,19 @@ class PurchasedContentResponse(BaseModel):
                 "purchased_at":"date created",
                 "remaining_storage":"storage available to use",
                 "end_date":"contract ending time"
+            }
+        }
+class UpdatePurchasedContent(BaseModel):
+    ticket_id:str = Field(...)
+    size: str = Field(...)
+
+    class Config:
+        allowed_population_by_field_name = True
+        arbitrary_types_allowed = True
+        json_encoders = {ObjectId: str}
+        json_schema_extra= {
+            "example": {
+                "ticket_id": "ticket if",
+            "size" : "size used"
             }
         }

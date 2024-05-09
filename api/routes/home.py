@@ -123,8 +123,8 @@ def newmarketpost(request: Request,access_token: str = Cookie(None)):
 @router.post("/newmarketpost", include_in_schema= False)
 async def create_post(stt: str = Form(...),
     price: str = Form(...),
-    lending_period: str = Form(...),access_token: str = Cookie(None)):
-    market_content = MarketContent(description="description", max_size= stt, price= price, lending_period=lending_period)
+    lending_period: str = Form(...), description: str = Form(...), access_token: str = Cookie(None)):
+    market_content = MarketContent(description=description, max_size= stt, price= price, lending_period=lending_period)
     at = ast.literal_eval(access_token)
     curr_user = await oauth2.get_current_user(at['access_token'])
     print(curr_user)

@@ -44,7 +44,6 @@ async def create_server(market_content:MarketContent,curr_user = Depends(oauth2.
         market_content['lender_id'] = curr_user["_id"]
         market_content["created_at"] = str(datetime.datetime.utcnow())
         market_content["ip_address"] = "127.0.0.1"
-        market_content["price"] = "500"
         market_content["presetup_done"]= False
         market_content["sold"]= False
 
